@@ -6,7 +6,7 @@ const User = require('../models/userModel');
 const isAuth = handleErrorAsync(async (req, res, next) => {
     let token;
     if(req.headers.authorization &&
-         req.headers.authorization.startWith('Bearer')){
+         req.headers.authorization.startsWith('Bearer')){
             token = req.headers.authorization.split(' ')[1];
     }
 
@@ -25,7 +25,7 @@ const isAuth = handleErrorAsync(async (req, res, next) => {
     } );
 
     const currentUser = await User.findById(decoded.id);
-
+    /* req.user 是自訂的屬性資料, 要將其帶到下一個req */
     req.user = currentUser;
     next();
 

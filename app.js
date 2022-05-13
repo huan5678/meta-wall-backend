@@ -4,7 +4,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const dotenv = require('dotenv');
-dotenv.config({path: './.env'});
+dotenv.config({path: './config.env'});
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -13,7 +13,7 @@ const {traceDeprecation} = require('process');
 
 const app = express();
 
-require('./connections');
+require('./connections/mongodb');
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
@@ -25,6 +25,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postsRouter);
 
+/* 404 錯誤 */
 app.use((req, res, next) => {
   res.status(404).send({
     status: false,

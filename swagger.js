@@ -22,4 +22,4 @@ const endpointsFiles = ['./app.js'];
 
 
 /* 3個參數: 1.要輸出的檔案的名稱  2.讀取的檔案    3.document的資料 */
-swaggerAutogen(outputFile, endpointsFiles, doc);
+swaggerAutogen(outputFile, endpointsFiles, doc); 

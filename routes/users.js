@@ -140,9 +140,35 @@ router.get('/profile', isAuth, handleErrorAsync(
 */
 router.post( '/updatePassword',
  isAuth, handleErrorAsync( async (req, res, next) => {
-     /* 使用者登入 
+     /*  
     #swagger.tags = ['Users  -  使用者']
-    #swagger.description = '使用者登入頁面 API'
+    #swagger.description = '使用者變更密碼頁面 API'
+    #swagger.parameters['body'] = {
+        in: 'body',
+        type: 'object',
+        required: true,
+        description: '資料格式',
+        schema: {
+            "password": "password1",
+            "confirmPassword": "password1"  
+        },
+    } 
+    #swagger.responses[200] = {
+            description: '取得使用者ID和姓名',
+            schema: {
+                "status": true,
+                "user": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2Y2Mjk2ZjkyYWEwZjI5ZTgxM2M2OCIsImlhdCI6MTY1MjUyOTUxNywiZXhwIjoxNjUzMTM0MzE3fQ.KhQimkDyVA0v-hck6FknZbaDEf7CvpH5IWHgSqiSNzE",
+                    "name": "Malenia5"
+                },
+            },       
+
+    }
+
+    #swagger.security = [{
+        "apiKeyAuth": []
+    }]
+
 
 */
     const {password, confirmPassword} = req.body;

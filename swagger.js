@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 dotenv.config({path: './config.env'});
 
-const swaggerAutogen = require('swagger-autogen');
+const swaggerAutogen = require('swagger-autogen')();
 const localh = process.env.SWAGGERLOCALHOST ? process.env.SWAGGERLOCALHOST : 'meta-wall-backend.herokuapp.com';
 
 

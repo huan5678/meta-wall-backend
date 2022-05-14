@@ -161,9 +161,64 @@
         "tags": [
           "Users - 使用者"
         ],
-        "description": "使用者登入頁面 API",
-        "parameters": [],
-        "responses": {}
+        "description": "使用者變更密碼頁面 API",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "type": "object",
+            "required": true,
+            "description": "資料格式",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "password": {
+                  "type": "string",
+                  "example": "password1"
+                },
+                "confirmPassword": {
+                  "type": "string",
+                  "example": "password1"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "取得使用者ID和姓名",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2Y2Mjk2ZjkyYWEwZjI5ZTgxM2M2OCIsImlhdCI6MTY1MjUyOTUxNywiZXhwIjoxNjUzMTM0MzE3fQ.KhQimkDyVA0v-hck6FknZbaDEf7CvpH5IWHgSqiSNzE"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Malenia5"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
       }
     },
     "/posts/": {

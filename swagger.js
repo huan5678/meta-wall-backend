@@ -1,4 +1,8 @@
+const dotenv = require('dotenv');
+dotenv.config({path: './config.env'});
+
 const swaggerAutogen = require('swagger-autogen');
+const localh = process.env.SWAGGERLOCALHOST ? process.env.SWAGGERLOCALHOST : 'meta-wall-backend.herokuapp.com';
 
 
 /* 幾個要注意的參數 */
@@ -8,8 +12,17 @@ const doc = {
         title: 'Meta API',      /* swagger線上文件的名稱 */
         description: '示範範例生成文件'
     },
-    host: 'meta-wall-backend.herokuapp.com',   /* swagger線上文件打的host(local | heroku) */
-    schemes: ['https'],                 /* swagger支援的 protocol */
+    host: localh,   /* swagger線上文件打的host(local | heroku) */
+    schemes: ['http','https'],                 /* swagger支援的 protocol */
+    securityDefinitions: {
+        apiKeyAuth: {
+            type: 'apiKey',
+            in: 'headers',
+            name: 'authorization',
+            description: '必須加上 API Token',
+
+        },
+    },
 
     
 };

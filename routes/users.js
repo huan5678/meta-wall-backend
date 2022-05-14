@@ -10,6 +10,35 @@ const {isAuth, generateSendJWT } = require('../services/auth');
 
 
 router.post('/sign_up', handleErrorAsync( async (req, res, next) => {
+    /* 
+        #swagger.tags = ['Users  -  使用者'] 
+        #swagger.description = '使用者註冊頁面 API'
+        #swagger.parameters['body'] = {
+            in: 'body',
+            type: "object",
+            required: true,
+            description: '資料格式',
+            schema: {
+                "$name": "Malenia5",
+                "$email": "Malenia5@eldenring.io",
+                "$password": "password",
+                "$confirmPassword": "password",
+                "sex": "female",
+                "photo":"https://www.windowscentral.com/sites/wpcentral.com/files/styles/xlarge/public/field/image/2022/03/elden-ring-malenia.jpg",
+            }
+        }
+        #swagger.responses[200] = {
+            description: '為新使用者產生 token',
+            schema: {
+                "status": true,
+                "user": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2Y2Mjk2ZjkyYWEwZjI5ZTgxM2M2OCIsImlhdCI6MTY1MjUxNTQ3OCwiZXhwIjoxNjUzMTIwMjc4fQ.94SlCEqzEiyEeLS7QcPujjvJj1HvxJgCqQit2m8qgE8",
+                    "name": "Malenia5"
+                }
+            }
+
+        }
+    */
     console.log(req.body);
     let {email, password, confirmPassword, name} = req.body;
 
@@ -51,7 +80,11 @@ router.post('/sign_up', handleErrorAsync( async (req, res, next) => {
 } ));
 
 
-/* 使用者登入 */
+/* 使用者登入 
+    #swagger.tags = ['Users  -  使用者']
+    #swagger.description = '使用者登入頁面 API'
+
+*/
 router.post('/sign_in', handleErrorAsync( async (req, res, next) => {
     const {email, password} = req.body;
     if(!email || !password){
@@ -74,6 +107,26 @@ router.post('/sign_in', handleErrorAsync( async (req, res, next) => {
 
 
 router.get('/profile', isAuth, handleErrorAsync(
+      /* 使用者資料維護
+    #swagger.tags = ['Users  -  使用者']
+    #swagger.description = '使用者資料維護頁面 API'
+    #swagger.responses[200] = {
+            description: '取得使用者ID和姓名',
+            schema: {
+                "status": true,
+                "user": {
+                    "_id": "627f6296f92aa0f29e813c68",
+                    "name": "Malenia5",
+                },
+            },       
+
+    }
+
+    #swagger.security = [{
+        "apiKeyAuth": []
+    }]
+
+*/
      async (req, res, next) => {
         res.status(200).send( {
             status: true,
@@ -87,6 +140,11 @@ router.get('/profile', isAuth, handleErrorAsync(
 */
 router.post( '/updatePassword',
  isAuth, handleErrorAsync( async (req, res, next) => {
+     /* 使用者登入 
+    #swagger.tags = ['Users  -  使用者']
+    #swagger.description = '使用者登入頁面 API'
+
+*/
     const {password, confirmPassword} = req.body;
     if(password !== confirmPassword){
         return next(appError("400", "密碼不一致", next));

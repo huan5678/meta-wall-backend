@@ -22,30 +22,29 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use(usersRouter);
 app.use('/posts', postsRouter);
 
 app.use((req, res, next) => {
   res.status(404).send({
     status: false,
-    message: '您的路由不存在，請檢查路徑是否正確'
-  })
-})
+    message: '您的路由不存在，請檢查路徑是否正確',
+  });
+});
 
 app.use((err, req, res) => {
   res.status(500).send({
     status: false,
     err: err.name,
     message: err.message,
-  })
-})
-
-process.on('uncaughtException', err => {
-	console.error('Uncaughted Exception!')
-	console.error(err);
-	process.exit(1);
+  });
 });
 
+process.on('uncaughtException', (err) => {
+  console.error('Uncaughted Exception!');
+  console.error(err);
+  process.exit(1);
+});
 
 process.on('unhandledRejection', (reason, promise) => {
   console.error('未捕捉到的 rejection:', promise, '原因：', reason);

@@ -187,5 +187,33 @@ router.post( '/updatePassword',
 
 
 
+router.patch('/profile', isAuth, handleErrorAsync( async (req, res, next) => {
+    let {name, photo, sex} = req.body;
+    if(!name || !photo ||  !sex){
+        return next(appError("400", "要修改的欄位未正確填寫", next));
+    }
+    if(!validator.isURL(photo)){
+        return next("400", "請確認照片連結是否正確", next);
+    }
+
+    const userId = req.user.id;
+    const userData = {name, photo, sex};
+    await  User.findByIdAndUpdate(userId, userData);
+    const user = await User.findById(userId);
+    
+    res.status(200).send(
+
+        {
+            status: true,
+            message: '更新使用者資訊成功', 
+            user: user,
+            
+        }
+    )
+
+} ));
+
+
+
 
 module.exports = router;

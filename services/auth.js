@@ -4,14 +4,7 @@ const handleErrorAsync = require('./handleErrorAsync');
 const express = require('express');
 const User = require('../models/userModel');
 const isAuth = handleErrorAsync(async (req, res, next) => {
-    /* 使用者資料維護
-    #swagger.tags = ['Users  -  使用者']
-    #swagger.description = '使用者資料維護頁面 API'
-    #swagger.security = [{
-        "ApiKeyAuth": []
-    }]
-
-*/
+  
 
 
     let token;

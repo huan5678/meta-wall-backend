@@ -87,7 +87,7 @@ const authController = {
     password = bcrypt.hashSync(req.body.password, salt);
     const userId = req.user.id;
     await User.findByIdAndUpdate(userId, password);
-    return successHandle(res, '成功更新使用者密碼！');
+    return successHandle(res, '成功更新使用者密碼！',{});
   }),
   updateProfile: handleErrorAsync(async (req, res, next) => {
     let {name, photo, gender} = req.body;
@@ -99,7 +99,7 @@ const authController = {
     }
     const userId = req.user.id;
     const userData = {name, photo, gender};
-    await User.findByIdAndUpdate(userId, userData);
+    await User.findByIdAndUpdate(userId, userData, { runValidators: true });
     const user = await User.findById(userId);
     return successHandle(res, '成功更新使用者資訊！', user);
   }),

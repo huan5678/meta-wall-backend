@@ -5,8 +5,9 @@ const handleErrorAsync = require('../middleware/handleErrorAsync');
 const successHandle = require('../utils/successHandle');
 const appError = require('../utils/appError');
 const {generateToken} = require('../middleware/handleJWT');
+const {passwordCheck} = require('../utils/passwordCheck');
 
-const authController = {
+const userController = {
   userCreate: handleErrorAsync(async (req, res, next) => {
     let {email, password, confirmPassword, name} = req.body;
     if (!email || !password || !confirmPassword || !name) {
@@ -21,23 +22,22 @@ const authController = {
     if (!validator.isEmail(email)) {
       return appError(400, '請正確輸入 email 格式', next);
     }
-    const passwordRules = /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){7,}$/gm;
-    if (!passwordRules.test(password)) {
-      return appError(
-        400,
-        '密碼強度不足，請確認是否具至少有 1 個數字， 1 個大寫英文， 1 個小寫英文及 1 個特殊符號',
-        next
-      );
-    }
+    passwordCheck(password, next);
+
     if (password !== confirmPassword) {
       return appError(400, '請確認兩次輸入的密碼是否相同', next);
     }
-    const salt = bcrypt.genSaltSync(8);
-    password = bcrypt.hashSync(req.body.password, salt);
+
+    const user = User.findOne(email).exec();
+    if (user) {
+      return appError(400, '此帳號已有人使用，請試試其他 Email 帳號', next);
+    }
+
     const userData = {
       name,
       email,
       password,
+      isValidator: true,
     };
     await User.create(userData);
     return successHandle(res, '成功建立使用者帳號');
@@ -72,22 +72,13 @@ const authController = {
     if (password.length <= 7 || confirmPassword.length <= 7) {
       return appError(400, '密碼長度至少 8 個字', next);
     }
-    const passwordRules = /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){7,}$/gm;
-    if (!passwordRules.test(password)) {
-      return appError(
-        400,
-        '密碼強度不足，請確認是否具至少有 1 個數字， 1 個大寫英文， 1 個小寫英文及 1 個特殊符號',
-        next
-      );
-    }
+    passwordCheck(password, next);
     if (password !== confirmPassword) {
       return appError(400, '請確認兩次輸入的密碼是否相同', next);
     }
-    const salt = bcrypt.genSaltSync(8);
-    password = bcrypt.hashSync(req.body.password, salt);
     const userId = req.user.id;
     await User.findByIdAndUpdate(userId, password);
-    return successHandle(res, '成功更新使用者密碼！',{});
+    return successHandle(res, '成功更新使用者密碼！', {});
   }),
   updateProfile: handleErrorAsync(async (req, res, next) => {
     let {name, photo, gender} = req.body;
@@ -99,10 +90,10 @@ const authController = {
     }
     const userId = req.user.id;
     const userData = {name, photo, gender};
-    await User.findByIdAndUpdate(userId, userData, { runValidators: true });
+    await User.findByIdAndUpdate(userId, userData, {runValidators: true});
     const user = await User.findById(userId);
     return successHandle(res, '成功更新使用者資訊！', user);
   }),
 };
 
-module.exports = authController;
+module.exports = userController;

@@ -1,5 +1,5 @@
 const successHandle = (res, message = '', data) => {
-  typeof data === 'array' || typeof data === 'object' || data.length > 1
+  typeof data === 'array' || typeof data === 'object' || data?.length > 1
     ? res.send({
         status: true,
         message: message,

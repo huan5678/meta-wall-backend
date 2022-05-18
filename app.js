@@ -6,6 +6,9 @@ const logger = require('morgan');
 const dotenv = require('dotenv');
 dotenv.config({path: './.env'});
 
+const errorHandle = require('./utils/errorHandle');
+const errorHandleDev = require('./utils/errorHandleDev');
+
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
@@ -32,12 +35,23 @@ app.use((req, res, next) => {
   });
 });
 
-app.use((err, req, res) => {
-  res.status(500).send({
-    status: false,
-    err: err.name,
-    message: err.message,
-  });
+app.use((err, req, res, next) => {
+  err.statusCode = err.statusCode || 500;
+  if (process.env.NODE_ENV === 'dev') {
+    return errorHandleDev(err, res);
+  }
+  if (err.name === 'ValidationError') {
+    err.message = '資料欄位未正確填寫，請重新輸入！';
+    err.isOperational = true;
+    return errorHandle(err, res);
+  }
+
+  if (err.name === 'CastError') {
+    err.message = '無此 id 資料，請確認後重新輸入！';
+    err.isOperational = true;
+    return errorHandle(err, res);
+  }
+  errorHandle(err, res);
 });
 
 process.on('uncaughtException', (err) => {

@@ -28,7 +28,7 @@ const userController = {
       return appError(400, '請確認兩次輸入的密碼是否相同', next);
     }
 
-    const user = User.findOne(email).exec();
+    const user = await User.findOne({email}).exec();
     if (user) {
       return appError(400, '此帳號已有人使用，請試試其他 Email 帳號', next);
     }

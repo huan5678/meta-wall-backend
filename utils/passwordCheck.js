@@ -5,9 +5,9 @@ const passwordCheck = (password, next) => {
     return appError(
       400,
       '密碼強度不足，請確認是否具至少有 1 個數字， 1 個大寫英文， 1 個小寫英文及 1 個特殊符號',
-      next
+      next,
     );
   }
 };
 
-module.exports = {passwordCheck, passwordRules};
+module.exports = { passwordCheck, passwordRules };

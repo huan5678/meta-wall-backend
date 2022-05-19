@@ -3,6 +3,6 @@ const appError = (statusCode, message, next) => {
   error.statusCode = statusCode;
   error.isOperational = true;
   next(error);
-}
+};
 
 module.exports = appError;

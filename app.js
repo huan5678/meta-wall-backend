@@ -4,7 +4,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const dotenv = require('dotenv');
-dotenv.config({path: './.env'});
+dotenv.config({ path: './.env' });
 
 const errorHandle = require('./utils/errorHandle');
 const errorHandleDev = require('./utils/errorHandleDev');
@@ -12,7 +12,7 @@ const errorHandleDev = require('./utils/errorHandleDev');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
-const {traceDeprecation} = require('process');
+const { traceDeprecation } = require('process');
 
 const app = express();
 
@@ -20,7 +20,7 @@ require('./connections');
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 

@@ -4,7 +4,7 @@ const errorHandle = (err, res) => {
     name: err.name,
     message: err.message,
     err: err.stack,
-  })
-}
+  });
+};
 
 module.exports = errorHandle;

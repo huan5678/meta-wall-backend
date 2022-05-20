@@ -28,7 +28,7 @@ const generateToken = (user) => {
     name: user.name,
     photo: user.photo,
   };
-  return jwt.sign(payload, jwtSecret, {expiresIn: jwtExpires});
+  return jwt.sign(payload, jwtSecret, { expiresIn: jwtExpires });
 };
 
-module.exports = {isAuthor, generateToken};
+module.exports = { isAuthor, generateToken };

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const {passwordRules} = require('../utils/passwordCheck');
+const { passwordRules } = require('../utils/passwordCheck');
 
 const userSchema = {
   email: {

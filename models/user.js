@@ -1,25 +1,31 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const { passwordRules } = require('../utils/passwordCheck');
+const { passwordRule } = require('../utils/passwordRule');
 
 const userSchema = {
   email: {
     type: String,
     required: [true, 'email為必要資訊'],
-    match: [
-      /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
-      '請填寫正確 email 格式 name@domain.abc',
-    ],
+    validate: {
+      validator: function (v) {
+        return /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/.test(
+          v,
+        );
+      },
+      message: '請填寫正確 email 格式 name@domain.abc',
+    },
     unique: true,
   },
   password: {
     type: String,
     minLength: [8, '密碼至少 8 個字'],
     required: [true, '密碼欄位，請確實填寫'],
-    matches: [
-      passwordRules,
-      '密碼需符合至少有 1 個數字， 1 個大寫英文， 1 個小寫英文及 1 個特殊符號規定',
-    ],
+    validate: {
+      validator: function (v) {
+        return passwordRule.test(v);
+      },
+      message: '密碼需符合至少有 1 個數字， 1 個大寫英文， 1 個小寫英文',
+    },
   },
   name: {
     type: String,

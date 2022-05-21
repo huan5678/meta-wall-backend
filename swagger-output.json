@@ -2,11 +2,11 @@
   "swagger": "2.0",
   "info": {
     "title": "Meta API",
-    "description": "示範範例生成文件"
+    "description": "示範範例生成文件",
+    "version": "1.0.0"
   },
   "host": "localhost:3000",
   "basePath": "/",
-  "tags": [],
   "schemes": [
     "http",
     "https"
@@ -19,29 +19,29 @@
       "description": "必須加上 API Token"
     }
   },
-  "consumes": [],
-  "produces": [],
   "paths": {
-    "/users/sign_up": {
+    "/user/create": {
+      "post": {
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/user/login": {
       "post": {
         "tags": [
           "Users - 使用者"
         ],
-        "description": "使用者註冊頁面 API",
+        "description": "使用者登入頁面 API",
         "parameters": [
           {
             "name": "body",
             "in": "body",
-            "type": "object",
             "required": true,
             "description": "資料格式",
             "schema": {
               "type": "object",
               "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "Malenia5"
-                },
                 "email": {
                   "type": "string",
                   "example": "Malenia5@eldenring.io"
@@ -49,32 +49,18 @@
                 "password": {
                   "type": "string",
                   "example": "password"
-                },
-                "confirmPassword": {
-                  "type": "string",
-                  "example": "password"
-                },
-                "sex": {
-                  "type": "string",
-                  "example": "female"
-                },
-                "photo": {
-                  "type": "string",
-                  "example": "https://www.windowscentral.com/sites/wpcentral.com/files/styles/xlarge/public/field/image/2022/03/elden-ring-malenia.jpg"
                 }
               },
               "required": [
-                "name",
                 "email",
-                "password",
-                "confirmPassword"
+                "password"
               ]
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "為新使用者產生 token",
+            "description": "為登入使用者產生 token",
             "schema": {
               "type": "object",
               "properties": {
@@ -82,18 +68,13 @@
                   "type": "boolean",
                   "example": true
                 },
-                "user": {
-                  "type": "object",
-                  "properties": {
-                    "token": {
-                      "type": "string",
-                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2Y2Mjk2ZjkyYWEwZjI5ZTgxM2M2OCIsImlhdCI6MTY1MjUxNTQ3OCwiZXhwIjoxNjUzMTIwMjc4fQ.94SlCEqzEiyEeLS7QcPujjvJj1HvxJgCqQit2m8qgE8"
-                    },
-                    "name": {
-                      "type": "string",
-                      "example": "Malenia5"
-                    }
-                  }
+                "message": {
+                  "type": "string",
+                  "example": "登入成功"
+                },
+                "data": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2Y2Mjk2ZjkyYWEwZjI5ZTgxM2M2OCIsImlhdCI6MTY1MjUxNTQ3OCwiZXhwIjoxNjUzMTIwMjc4fQ.94SlCEqzEiyEeLS7QcPujjvJj1HvxJgCqQit2m8qgE8"
                 }
               },
               "xml": {
@@ -104,59 +85,7 @@
         }
       }
     },
-    "/users/sign_in": {
-      "post": {
-        "tags": [],
-        "description": "",
-        "parameters": [],
-        "responses": {}
-      }
-    },
-    "/users/profile": {
-      "get": {
-        "tags": [
-          "Users - 使用者"
-        ],
-        "description": "使用者資料維護頁面 API",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "取得使用者ID和姓名",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "status": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "user": {
-                  "type": "object",
-                  "properties": {
-                    "_id": {
-                      "type": "string",
-                      "example": "627f6296f92aa0f29e813c68"
-                    },
-                    "name": {
-                      "type": "string",
-                      "example": "Malenia5"
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
-    "/users/updatePassword": {
+    "/user/update_password": {
       "post": {
         "tags": [
           "Users - 使用者"
@@ -166,7 +95,6 @@
           {
             "name": "body",
             "in": "body",
-            "type": "object",
             "required": true,
             "description": "資料格式",
             "schema": {
@@ -194,18 +122,9 @@
                   "type": "boolean",
                   "example": true
                 },
-                "user": {
-                  "type": "object",
-                  "properties": {
-                    "token": {
-                      "type": "string",
-                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2Y2Mjk2ZjkyYWEwZjI5ZTgxM2M2OCIsImlhdCI6MTY1MjUyOTUxNywiZXhwIjoxNjUzMTM0MzE3fQ.KhQimkDyVA0v-hck6FknZbaDEf7CvpH5IWHgSqiSNzE"
-                    },
-                    "name": {
-                      "type": "string",
-                      "example": "Malenia5"
-                    }
-                  }
+                "message": {
+                  "type": "string",
+                  "example": "成功更新使用者密碼"
                 }
               },
               "xml": {
@@ -221,37 +140,128 @@
         ]
       }
     },
-    "/posts/": {
+    "/user/profile": {
       "get": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Users - 使用者"
+        ],
+        "description": "使用者資訊頁面 API",
         "parameters": [
           {
-            "name": "timeSort",
-            "in": "query"
-          },
-          {
-            "name": "q",
-            "in": "query"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "資料格式",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "Malenia5"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "成功取得使用者資訊",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "成功取得使用者資訊"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "Malenia"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "female"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "www.melenia.io/Malenia5"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       },
-      "post": {
-        "tags": [],
-        "description": "",
-        "parameters": [],
+      "patch": {
+        "tags": [
+          "Users - 使用者"
+        ],
+        "description": "使用者更新頁面 API",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "資料格式",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Malenia5"
+                },
+                "photo": {
+                  "type": "string",
+                  "example": "www@eldenring.io/Malenia5"
+                },
+                "gender": {
+                  "type": "string",
+                  "example": "female"
+                }
+              },
+              "required": [
+                "name",
+                "photo",
+                "gender"
+              ]
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "成功更新使用者資訊",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "message": {
+                  "type": "string",
+                  "example": "成功更新使用者資訊！"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       }
     }
-  },
-  "definitions": {}
+  }
 }

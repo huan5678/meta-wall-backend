@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "100d7a54-2388-4d2c-87c9-382b7c0b506a",
+		"_postman_id": "31c58f7f-e004-49cf-adc0-3496c004bd32",
 		"name": "metawall-backend-api local",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -158,6 +158,14 @@
 						"profile"
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "取得所有貼文",
+			"request": {
+				"method": "GET",
+				"header": []
 			},
 			"response": []
 		}

@@ -43,33 +43,6 @@ const userController = {
     return successHandle(res, '成功建立使用者帳號');
   }),
   userLogin: handleErrorAsync(async (req, res, next) => {
-    /* 使用者登入 
-        #swagger.tags = ['Users  -  使用者']
-        #swagger.description = '使用者登入頁面 API'
-        #swagger.parameters['body'] = {
-            in: 'body',
-            type: "object",
-            required: true,
-            description: '資料格式',
-            schema: {
-                "$email": "Malenia5@eldenring.io",
-                "$password": "password",
-                
-            }
-        }
-        #swagger.responses[200] = {
-            description: '為登入使用者產生 token',
-            schema: {
-                "status": true,
-                "message": "登入成功",
-                "data": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2Y2Mjk2ZjkyYWEwZjI5ZTgxM2M2OCIsImlhdCI6MTY1MjUxNTQ3OCwiZXhwIjoxNjUzMTIwMjc4fQ.94SlCEqzEiyEeLS7QcPujjvJj1HvxJgCqQit2m8qgE8",
-                
-            }
-
-        }
-    */
-
-
     const {email, password} = req.body;
     if (!email || !password) {
       return appError(400, 'email 或 password 欄位未正確填寫', next);
@@ -87,64 +60,12 @@ const userController = {
     return successHandle(res, '登入成功', token);
   }),
   getProfile: handleErrorAsync(async (req, res, next) => {
-      /* 
-        #swagger.tags = ['Users  -  使用者'] 
-        #swagger.description = '使用者資訊頁面 API'
-        #swagger.parameters['body'] = {
-            in: 'body',
-            type: "object",
-            required: true,
-            description: '資料格式',
-            schema: {
-                "$id": "Malenia5",
-            }
-        }
-        #swagger.responses[200] = {
-            description: '成功取得使用者資訊',
-            schema: {
-                "status": true,
-                "message": "成功取得使用者資訊",
-                user,
-                
-            }
-
-        }
-    */
-
     const userId = req.user.id;
     const user = await User.findById(userId);
     return successHandle(res, '成功取得使用者資訊', user);
   }),
   updatePassword: handleErrorAsync(async (req, res, next) => {
-    /*  
-    #swagger.tags = ['Users  -  使用者']
-    #swagger.description = '使用者變更密碼頁面 API'
-    #swagger.parameters['body'] = {
-        in: 'body',
-        type: 'object',
-        required: true,
-        description: '資料格式',
-        schema: {
-            "password": "password1",
-            "confirmPassword": "password1"  
-        },
-    } 
-    #swagger.responses[200] = {
-            description: '成功更新使用者密碼',
-            schema: {
-                "status": true,
-                "message": "成功更新使用者密碼",
-                
-            },       
-
-    }
-
-    #swagger.security = [{
-        "apiKeyAuth": []
-    }]
-
-
-    */
+    
 
     let {password, confirmPassword} = req.body;
     if (!password || !confirmPassword) {
@@ -162,34 +83,6 @@ const userController = {
     return successHandle(res, '成功更新使用者密碼！', {});
   }),
   updateProfile: handleErrorAsync(async (req, res, next) => {
-      /* 
-        #swagger.tags = ['Users  -  使用者'] 
-        #swagger.description = '使用者更新頁面 API'
-        #swagger.parameters['body'] = {
-            in: 'body',
-            type: "object",
-            required: true,
-            description: '資料格式',
-            schema: {
-                "$name": "Malenia5",
-                "$photo": "www@eldenring.io/Malenia5",
-                "$gender": "female",
-                
-            }
-        }
-        #swagger.responses[200] = {
-            description: '成功更新使用者資訊',
-            schema: {
-                "status": true,
-                "message": "成功更新使用者資訊！",
-                
-            }
-
-        }
-    */
-
-
-
     let {name, photo, gender} = req.body;
     if (!name && !photo && !gender) {
       return appError(400, '要修改的欄位未正確填寫', next);

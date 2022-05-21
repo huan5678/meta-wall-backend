@@ -1,0 +1,192 @@
+{
+	"info": {
+		"_postman_id": "100d7a54-2388-4d2c-87c9-382b7c0b506a",
+		"name": "metawall-backend-api local",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "使用者註冊",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"小傑・富力士\",\n    \"email\": \"gon@hunter.cc\",\n    \"password\": \"1Q2w3e4$\",\n    \"confirmPassword\": \"1Q2w3e4$\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/user/create",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"user",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "使用者登入",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"gon@hunter.cc\",\n    \"password\": \"1Q2w3e4r@\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/user/login",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "取得使用者資訊",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2Y3NTM5OTk2Zjg4ZWNjYzE2YjM3YiIsIm5hbWUiOiLluqvmi4nnmq7ljaEiLCJpYXQiOjE2NTI1MjQzODYsImV4cCI6MTY1MzEyOTE4Nn0.yO97f_o7WN2lp4QDaSitGhLZfK5qQJggXdOhkn-tvYo",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/user/profile",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"user",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更新使用者密碼",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2Y3NTM5OTk2Zjg4ZWNjYzE2YjM3YiIsIm5hbWUiOiLluqvmi4nnmq7ljaEiLCJpYXQiOjE2NTI1MjQzODYsImV4cCI6MTY1MzEyOTE4Nn0.yO97f_o7WN2lp4QDaSitGhLZfK5qQJggXdOhkn-tvYo",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"password\": \"1Q2w3e4R@\",\n    \"confirmPassword\": \"1Q2w3e4R@\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/user/update_password",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"user",
+						"update_password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "修改使用者資訊",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2Y3NTM5OTk2Zjg4ZWNjYzE2YjM3YiIsIm5hbWUiOiLluqvmi4nnmq7ljaEiLCJpYXQiOjE2NTI1MjQzODYsImV4cCI6MTY1MzEyOTE4Nn0.yO97f_o7WN2lp4QDaSitGhLZfK5qQJggXdOhkn-tvYo",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"gender\": \"x\",\n    \"photo\": \"https://static.wikia.nocookie.net/hunterxhunter/images/b/b6/%E9%85%B7%E6%8B%89%E7%9A%AE%E5%8D%A1%E6%96%B0%E7%89%88.jpg/revision/latest/scale-to-width-down/530?cb=20140803085002&path-prefix=zh\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/user/profile",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"user",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "localhost:3000",
+			"type": "string"
+		}
+	]
+}

@@ -5,7 +5,7 @@ const handleErrorAsync = require('../middleware/handleErrorAsync');
 const successHandle = require('../utils/successHandle');
 const appError = require('../utils/appError');
 const { generateToken } = require('../middleware/handleJWT');
-const { passwordCheck } = require('../utils/passwordCheck');
+const { passwordCheck } = require('../utils/passwordRule');
 
 const userController = {
   userCreate: handleErrorAsync(async (req, res, next) => {
@@ -23,7 +23,6 @@ const userController = {
       return appError(400, '請正確輸入 email 格式', next);
     }
     passwordCheck(password, next);
-
     if (password !== confirmPassword) {
       return appError(400, '請確認兩次輸入的密碼是否相同', next);
     }

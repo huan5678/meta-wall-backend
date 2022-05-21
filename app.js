@@ -17,7 +17,7 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerFile = require('./swagger-output.json');
 const app = express();
 
-require('./connections/mongodb');
+require('./connections');
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());

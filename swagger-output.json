@@ -159,7 +159,7 @@
               "properties": {
                 "password": {
                   "type": "string",
-                  "example": "1passwordP!@"
+                  "example": "2passwordP!@"
                 },
                 "confirmPassword": {
                   "type": "string",
@@ -181,7 +181,11 @@
                 },
                 "message": {
                   "type": "string",
-                  "example": "成功更新使用者密碼"
+                  "example": "成功更新使用者密碼！"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -202,27 +206,8 @@
         "tags": [
           "Users - 使用者"
         ],
-        "description": "使用者資訊頁面 API",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "description": "資料格式",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string",
-                  "example": "Malenia5"
-                }
-              },
-              "required": [
-                "id"
-              ]
-            }
-          }
-        ],
+        "description": "使用者資訊頁面 API 必須先登入",
+        "parameters": [],
         "responses": {
           "200": {
             "description": "成功取得使用者資訊",
@@ -315,6 +300,39 @@
                 "message": {
                   "type": "string",
                   "example": "成功更新使用者資訊！"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "6287ab1f27b974b47dd93328"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "Malenia@eldenring.io"
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": "$2a$08$ocKhYvf/BoKIcp4PRzohh.HA/arrLYgZ1lBRlARRk5JA1MXGswaba"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Malenia"
+                    },
+                    "isValidator": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "male"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "www@eldenring.io/Malenia"
+                    }
+                  }
                 }
               },
               "xml": {

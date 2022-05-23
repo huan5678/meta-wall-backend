@@ -3,7 +3,7 @@ const router = express.Router();
 const Post = require('../models/post');
 const successHandle = require('../utils/successHandle');
 const postController = require('../controllers/post');
-const isAuth = require('../middleware/handleJWT');
+const { isAuthor } = require('../middleware/handleJWT');
 
 //資料全撈
 router.get('/', async (req, res) => {
@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
   successHandle(res, '成功撈取所有貼文', post);
 });
 
-router.post('/post/create', isAuth, postController.postCreate);
-router.delete('/post/delete/:id', isAuth, postController.postDelete);
+router.post('/post/create', isAuthor, postController.postCreate);
+router.delete('/post/delete/:id', isAuthor, postController.postDelete);
 
 module.exports = router;

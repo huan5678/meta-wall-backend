@@ -20,7 +20,7 @@ const postController = {
     if (!_id) {
       return next(appError(400, '無此貼文', next));
     }
-    const deleteResult = await Post.deleteMany({ id: _id });
+    let deleteResult = await Post.findByIdAndDelete({ id: _id });
     return successHandle(res, '刪除一則貼文', deleteResult);
   }),
 };

@@ -69,7 +69,7 @@ const thirdPartyController = {
     if (!user) {
       const googleData = {
         name: getData.data.name,
-        'thirdPartyAuthor.googleId': getData.data.id,
+        googleId: getData.data.id,
         email: getData.data.email,
         photo: getData.data.picture,
       };
@@ -101,9 +101,9 @@ const thirdPartyController = {
     const queryString = new URLSearchParams(options).toString();
     const response = await axios.post(url, queryString);
 
-    const { access_token, token_type, expires_in } = response.data;
+    const { token_type, expires_in } = response.data;
 
-    console.log(access_token);
+    console.log(response.data);
     console.log(token_type);
     console.log(expires_in);
   }),
@@ -163,7 +163,7 @@ const thirdPartyController = {
     if (!user) {
       const lineData = {
         name: getProfile.data.displayName,
-        'thirdPartyAuthor.lineId': getProfile.data.userId,
+        lineId: getProfile.data.userId,
         photo: getProfile.data.pictureUrl,
       };
       const userData = await User.create(lineData);

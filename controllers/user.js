@@ -6,7 +6,6 @@ const successHandle = require('../utils/successHandle');
 const appError = require('../utils/appError');
 const { generateToken } = require('../middleware/handleJWT');
 const { passwordCheck } = require('../utils/passwordRule');
-import axios from 'axios';
 
 const userController = {
   userCreate: handleErrorAsync(async (req, res, next) => {

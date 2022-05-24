@@ -3,7 +3,7 @@ const handleErrorAsync = require('../middleware/handleErrorAsync');
 const successHandle = require('../utils/successHandle');
 const appError = require('../utils/appError');
 const { generateToken } = require('../middleware/handleJWT');
-const { passwordCheck } = require('../utils/passwordRule');
+const { randomPassword } = require('../utils/passwordRule');
 const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
 
@@ -64,17 +64,17 @@ const thirdPartyController = {
       },
     );
     const googleId = getData.data.id;
-    const user = await User.findOne({ 'thirdPartyAuthor.googleId': googleId });
-
+    const user = await User.findOne({ googleId: googleId }).exec();
     if (!user) {
       const googleData = {
         name: getData.data.name,
+        password: randomPassword(),
         googleId: getData.data.id,
         email: getData.data.email,
         photo: getData.data.picture,
       };
       const userData = await User.create(googleData);
-      successHandle(res, '已成功已登入', userData);
+      return successHandle(res, '已成功已登入', userData);
     }
 
     successHandle(res, '已成功已登入', user);
@@ -165,9 +165,10 @@ const thirdPartyController = {
         name: getProfile.data.displayName,
         lineId: getProfile.data.userId,
         photo: getProfile.data.pictureUrl,
+        password: randomPassword(),
       };
       const userData = await User.create(lineData);
-      successHandle(res, '已成功已登入', userData);
+      return successHandle(res, '已成功已登入', userData);
     }
 
     successHandle(res, '已成功已登入', user);

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c4634945-9f28-4d9e-bdf0-be2ab4073b18",
+		"_postman_id": "675d116b-af4a-4685-a941-92085cdc23a4",
 		"name": "metawall-backend-api local",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -205,6 +205,72 @@
 					],
 					"path": [
 						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "追蹤會員",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOGM4MzA1MTY2ZWE1YmI3Y2FhNzQ3ZCIsIm5hbWUiOiLlsI_lgpHku5bniLgiLCJpYXQiOjE2NTMzNzU3NzAsImV4cCI6MTY1Mzk4MDU3MH0.sDI8TCZ06hSd5wzGW-pGkxGBtXtGVOd1rLNTteJfDD4",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/628c8224166ea5bb7caa7475/follow",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"628c8224166ea5bb7caa7475",
+						"follow"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "取消追蹤會員",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOGM4MzA1MTY2ZWE1YmI3Y2FhNzQ3ZCIsIm5hbWUiOiLlsI_lgpHku5bniLgiLCJpYXQiOjE2NTMzNzU3NzAsImV4cCI6MTY1Mzk4MDU3MH0.sDI8TCZ06hSd5wzGW-pGkxGBtXtGVOd1rLNTteJfDD4",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/628c8224166ea5bb7caa7475/unfollow",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"628c8224166ea5bb7caa7475",
+						"unfollow"
 					]
 				}
 			},

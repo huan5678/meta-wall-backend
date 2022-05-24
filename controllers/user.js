@@ -93,6 +93,58 @@ const userController = {
     const user = await User.findById(userId);
     return successHandle(res, '成功更新使用者資訊！', user);
   }),
+  addFollower: handleErrorAsync(async (req, res, next) => {
+    if (req.params.id === req.user.id) {
+      return next(appError(401, '您無法追蹤自己', next));
+    }
+    await User.updateOne(
+      {
+        _id: req.user.id,
+        'following.user': { $ne: req.params.id },
+      },
+      {
+        $addToSet: { following: { user: req.params.id } },
+      },
+    );
+    await User.updateOne(
+      {
+        _id: req.params.id,
+        'followers.user': { $ne: req.user.id },
+      },
+      {
+        $addToSet: { followers: { user: req.user.id } },
+      },
+    );
+    res.status(200).json({
+      status: 'success',
+      message: '您已成功追蹤！',
+    });
+  }),
+  deleteFollower: handleErrorAsync(async (req, res, next) => {
+    if (req.params.id === req.user.id) {
+      return next(appError(401, '您無法取消追蹤自己', next));
+    }
+    await User.updateOne(
+      {
+        _id: req.user.id,
+      },
+      {
+        $pull: { following: { user: req.params.id } },
+      },
+    );
+    await User.updateOne(
+      {
+        _id: req.params.id,
+      },
+      {
+        $pull: { followers: { user: req.user.id } },
+      },
+    );
+    res.status(200).json({
+      status: 'success',
+      message: '您已成功取消追蹤！',
+    });
+  }),
 };
 
 module.exports = userController;

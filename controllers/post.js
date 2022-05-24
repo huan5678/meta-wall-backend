@@ -4,6 +4,14 @@ const successHandle = require('../utils/successHandle');
 const appError = require('../utils/appError');
 
 const postController = {
+  getOne: handleErrorAsync(async (req, res, next) => {
+    const _id = req.params.id;
+    if (!_id) {
+      return next(appError(400, '無此貼文', next));
+    }
+    let getOneResult = await Post.findById({ _id });
+    return successHandle(res, '成功取得一則貼文', getOneResult);
+  }),
   postCreate: handleErrorAsync(async (req, res, next) => {
     const { content } = req.body;
     if (content == undefined) {

@@ -5,7 +5,7 @@ const appError = require('../utils/appError');
 const { generateToken } = require('../middleware/handleJWT');
 const { passwordCheck } = require('../utils/passwordRule');
 const { v4: uuidv4 } = require('uuid');
-import axios from 'axios';
+const axios = require('axios');
 
 // const google_redirect_url = process.env.GOOGLE_REDIRECT_URL;
 const google_redirect_url = 'http://localhost:3000/user/google/callback';

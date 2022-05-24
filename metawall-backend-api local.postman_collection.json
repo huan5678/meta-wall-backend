@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "31c58f7f-e004-49cf-adc0-3496c004bd32",
+		"_postman_id": "c4634945-9f28-4d9e-bdf0-be2ab4073b18",
 		"name": "metawall-backend-api local",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -165,7 +165,48 @@
 			"name": "取得所有貼文",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "上傳圖片",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyODUyNDYwNzhjOGI4NWE2ODM5OGYzYyIsIm5hbWUiOiLlsI_lgpHjg7vlr4zlipvlo6siLCJwaG90byI6Imh0dHBzOi8vc3RhdGljLndpa2lhLm5vY29va2llLm5ldC9odW50ZXJ4aHVudGVyL2ltYWdlcy9iL2I2LyVFOSU4NSVCNyVFNiU4QiU4OSVFNyU5QSVBRSVFNSU4RCVBMSVFNiU5NiVCMCVFNyU4OSU4OC5qcGcvcmV2aXNpb24vbGF0ZXN0L3NjYWxlLXRvLXdpZHRoLWRvd24vNTMwP2NiPTIwMTQwODAzMDg1MDAyJnBhdGgtcHJlZml4PXpoIiwiaWF0IjoxNjUzMzY1NDkxLCJleHAiOjE2NTM5NzAyOTF9.NWSiQ9NvE44ItPVbXB4lbgke5fAOfHdWK3_tSJ1uATA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": []
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/upload",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"upload"
+					]
+				}
 			},
 			"response": []
 		}

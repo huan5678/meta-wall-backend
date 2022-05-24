@@ -94,26 +94,29 @@ const userController = {
     return successHandle(res, '成功更新使用者資訊！', user);
   }),
   addFollower: handleErrorAsync(async (req, res, next) => {
-    const { params, user } = req;
-    if (params.id === user.id) {
+    const {
+      params: { id: followingID },
+      user: { id: userID },
+    } = req;
+    if (paramsId === userId) {
       return next(appError(401, '您無法追蹤自己', next));
     }
     await User.updateOne(
       {
-        _id: req.user.id,
-        'following.user': { $ne: req.params.id },
+        _id: userID,
+        'following.user': { $ne: followingID },
       },
       {
-        $addToSet: { following: { user: req.params.id } },
+        $addToSet: { following: { user: followingID } },
       },
     );
     await User.updateOne(
       {
-        _id: req.params.id,
-        'followers.user': { $ne: req.user.id },
+        _id: followingID,
+        'followers.user': { $ne: userID },
       },
       {
-        $addToSet: { followers: { user: req.user.id } },
+        $addToSet: { followers: { user: userID } },
       },
     );
     res.status(200).json({
@@ -122,23 +125,27 @@ const userController = {
     });
   }),
   deleteFollower: handleErrorAsync(async (req, res, next) => {
-    if (req.params.id === req.user.id) {
+    const {
+      params: { id: followingID },
+      user: { id: userID },
+    } = req;
+    if (followingID === userID) {
       return next(appError(401, '您無法取消追蹤自己', next));
     }
     await User.updateOne(
       {
-        _id: req.user.id,
+        _id: userID,
       },
       {
-        $pull: { following: { user: req.params.id } },
+        $pull: { following: { user: followingID } },
       },
     );
     await User.updateOne(
       {
-        _id: req.params.id,
+        _id: followingID,
       },
       {
-        $pull: { followers: { user: req.user.id } },
+        $pull: { followers: { user: userID } },
       },
     );
     res.status(200).json({

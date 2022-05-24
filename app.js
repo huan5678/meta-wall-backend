@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use(usersRouter);
-app.use(postsRouter);
+app.use('/posts', postsRouter);
 
 app.use((req, res, next) => {
   res.status(404).send({

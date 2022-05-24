@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
   successHandle(res, '成功撈取所有貼文', post);
 });
 
-router.post('/post/create', isAuthor, postController.postCreate);
-router.delete('/post/delete/:id', isAuthor, postController.postDelete);
+router.post('/create', isAuthor, postController.postCreate);
+router.delete('/:id', isAuthor, postController.postDelete);
 
 module.exports = router;

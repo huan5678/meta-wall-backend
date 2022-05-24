@@ -8,5 +8,7 @@ router.post('/user/login', userController.userLogin);
 router.post('/user/update_password', isAuthor, userController.updatePassword);
 router.get('/user/profile', isAuthor, userController.getProfile);
 router.patch('/user/profile', isAuthor, userController.updateProfile);
+router.post('/:id/follow', isAuthor, userController.addFollower);
+router.delete('/:id/unfollow', isAuthor, userController.deleteFollower);
 
 module.exports = router;

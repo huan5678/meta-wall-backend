@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "31c58f7f-e004-49cf-adc0-3496c004bd32",
+		"_postman_id": "d9f08576-36af-48af-84e6-764431cd9fd7",
 		"name": "metawall-backend-api local",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -68,9 +68,10 @@
 				"method": "GET",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2Y3NTM5OTk2Zjg4ZWNjYzE2YjM3YiIsIm5hbWUiOiLluqvmi4nnmq7ljaEiLCJpYXQiOjE2NTI1MjQzODYsImV4cCI6MTY1MzEyOTE4Nn0.yO97f_o7WN2lp4QDaSitGhLZfK5qQJggXdOhkn-tvYo",
-						"type": "text"
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
@@ -101,9 +102,10 @@
 				"method": "POST",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2Y3NTM5OTk2Zjg4ZWNjYzE2YjM3YiIsIm5hbWUiOiLluqvmi4nnmq7ljaEiLCJpYXQiOjE2NTI1MjQzODYsImV4cCI6MTY1MzEyOTE4Nn0.yO97f_o7WN2lp4QDaSitGhLZfK5qQJggXdOhkn-tvYo",
-						"type": "text"
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
@@ -134,9 +136,10 @@
 				"method": "PATCH",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2Y3NTM5OTk2Zjg4ZWNjYzE2YjM3YiIsIm5hbWUiOiLluqvmi4nnmq7ljaEiLCJpYXQiOjE2NTI1MjQzODYsImV4cCI6MTY1MzEyOTE4Nn0.yO97f_o7WN2lp4QDaSitGhLZfK5qQJggXdOhkn-tvYo",
-						"type": "text"
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
@@ -165,7 +168,117 @@
 			"name": "取得所有貼文",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "上傳圖片",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": []
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/upload",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "追蹤會員",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/628c8224166ea5bb7caa7475/follow",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"628c8224166ea5bb7caa7475",
+						"follow"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "取消追蹤會員",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/628c8224166ea5bb7caa7475/unfollow",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"628c8224166ea5bb7caa7475",
+						"unfollow"
+					]
+				}
 			},
 			"response": []
 		}

@@ -63,17 +63,20 @@ const thirdPartyController = {
         },
       },
     );
+    const googleEmail = getData.data.email;
     const googleId = getData.data.id;
-    const user = await User.findOne({ googleId: googleId }).exec();
+    const user = await User.findOne({
+      $or: [{ googleId: googleId }, { email: googleEmail }],
+    }).exec();
     if (!user) {
-      const googleData = {
+      const data = {
         name: getData.data.name,
         password: randomPassword(),
         googleId: getData.data.id,
         email: getData.data.email,
         photo: getData.data.picture,
       };
-      const userData = await User.create(googleData);
+      const userData = await User.create(data);
       return successHandle(res, '已成功已登入', userData);
     }
 
@@ -101,11 +104,32 @@ const thirdPartyController = {
     const queryString = new URLSearchParams(options).toString();
     const response = await axios.post(url, queryString);
 
-    const { token_type, expires_in } = response.data;
+    const { access_token } = response.data;
 
-    console.log(response.data);
-    console.log(token_type);
-    console.log(expires_in);
+    const query = {
+      fields: ['id', 'email', 'name', 'picture'].join(','),
+      access_token,
+    };
+    const params = new URLSearchParams(query).toString();
+    const getData = await axios.get(`https://graph.facebook.com/me?${params}`);
+    const facebookId = getData.data.id;
+    const facebookEmail = getData.data.email;
+    const user = await User.findOne({
+      $or: [{ facebookId: facebookId }, { email: facebookEmail }],
+    }).exec();
+    if (!user) {
+      const data = {
+        name: getData.data.name,
+        password: randomPassword(),
+        facebookId: getData.data.id,
+        email: getData.data.email,
+        photo: getData.data.picture.url,
+      };
+      const userData = await User.create(data);
+      return successHandle(res, '已成功已登入', userData);
+    }
+
+    successHandle(res, '已成功已登入', user);
   }),
   loginWithLine: handleErrorAsync(async (req, res, next) => {
     const query = {

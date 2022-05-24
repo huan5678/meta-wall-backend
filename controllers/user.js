@@ -94,7 +94,8 @@ const userController = {
     return successHandle(res, '成功更新使用者資訊！', user);
   }),
   addFollower: handleErrorAsync(async (req, res, next) => {
-    if (req.params.id === req.user.id) {
+    const { params, user } = req;
+    if (params.id === user.id) {
       return next(appError(401, '您無法追蹤自己', next));
     }
     await User.updateOne(

@@ -21,7 +21,7 @@ const postSchema = new mongoose.Schema(
       required: [true, '貼文姓名未填寫'],
     },
     likes: {
-      type: [mongoose.Schema.ObjectId],
+      type: [mongoose.Schema.Types.ObjectId],
       default: [],
     },
   },

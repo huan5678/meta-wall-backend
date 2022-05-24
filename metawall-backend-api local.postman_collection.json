@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "675d116b-af4a-4685-a941-92085cdc23a4",
+		"_postman_id": "d9f08576-36af-48af-84e6-764431cd9fd7",
 		"name": "metawall-backend-api local",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -68,9 +68,10 @@
 				"method": "GET",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2Y3NTM5OTk2Zjg4ZWNjYzE2YjM3YiIsIm5hbWUiOiLluqvmi4nnmq7ljaEiLCJpYXQiOjE2NTI1MjQzODYsImV4cCI6MTY1MzEyOTE4Nn0.yO97f_o7WN2lp4QDaSitGhLZfK5qQJggXdOhkn-tvYo",
-						"type": "text"
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
@@ -101,9 +102,10 @@
 				"method": "POST",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2Y3NTM5OTk2Zjg4ZWNjYzE2YjM3YiIsIm5hbWUiOiLluqvmi4nnmq7ljaEiLCJpYXQiOjE2NTI1MjQzODYsImV4cCI6MTY1MzEyOTE4Nn0.yO97f_o7WN2lp4QDaSitGhLZfK5qQJggXdOhkn-tvYo",
-						"type": "text"
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
@@ -134,9 +136,10 @@
 				"method": "PATCH",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyN2Y3NTM5OTk2Zjg4ZWNjYzE2YjM3YiIsIm5hbWUiOiLluqvmi4nnmq7ljaEiLCJpYXQiOjE2NTI1MjQzODYsImV4cCI6MTY1MzEyOTE4Nn0.yO97f_o7WN2lp4QDaSitGhLZfK5qQJggXdOhkn-tvYo",
-						"type": "text"
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
@@ -178,9 +181,10 @@
 				"method": "POST",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyODUyNDYwNzhjOGI4NWE2ODM5OGYzYyIsIm5hbWUiOiLlsI_lgpHjg7vlr4zlipvlo6siLCJwaG90byI6Imh0dHBzOi8vc3RhdGljLndpa2lhLm5vY29va2llLm5ldC9odW50ZXJ4aHVudGVyL2ltYWdlcy9iL2I2LyVFOSU4NSVCNyVFNiU4QiU4OSVFNyU5QSVBRSVFNSU4RCVBMSVFNiU5NiVCMCVFNyU4OSU4OC5qcGcvcmV2aXNpb24vbGF0ZXN0L3NjYWxlLXRvLXdpZHRoLWRvd24vNTMwP2NiPTIwMTQwODAzMDg1MDAyJnBhdGgtcHJlZml4PXpoIiwiaWF0IjoxNjUzMzY1NDkxLCJleHAiOjE2NTM5NzAyOTF9.NWSiQ9NvE44ItPVbXB4lbgke5fAOfHdWK3_tSJ1uATA",
-						"type": "text"
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
@@ -216,9 +220,10 @@
 				"method": "POST",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOGM4MzA1MTY2ZWE1YmI3Y2FhNzQ3ZCIsIm5hbWUiOiLlsI_lgpHku5bniLgiLCJpYXQiOjE2NTMzNzU3NzAsImV4cCI6MTY1Mzk4MDU3MH0.sDI8TCZ06hSd5wzGW-pGkxGBtXtGVOd1rLNTteJfDD4",
-						"type": "text"
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
@@ -249,9 +254,10 @@
 				"method": "DELETE",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOGM4MzA1MTY2ZWE1YmI3Y2FhNzQ3ZCIsIm5hbWUiOiLlsI_lgpHku5bniLgiLCJpYXQiOjE2NTMzNzU3NzAsImV4cCI6MTY1Mzk4MDU3MH0.sDI8TCZ06hSd5wzGW-pGkxGBtXtGVOd1rLNTteJfDD4",
-						"type": "text"
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {

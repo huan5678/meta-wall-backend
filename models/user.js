@@ -33,14 +33,17 @@ const userSchema = {
     minLength: [1, '名稱請大於 1 個字'],
     maxLength: [50, '名稱長度過長，最多只能 50 個字'],
   },
-  photo: String,
+  photo: {
+    type: String,
+    default: '',
+  },
   gender: {
     type: String,
     enum: ['male', 'female', 'x'],
   },
   followers: [
     {
-      user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+      user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
       createdAt: {
         type: Date,
         default: Date.now,
@@ -49,7 +52,7 @@ const userSchema = {
   ],
   following: [
     {
-      user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+      user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
       createdAt: {
         type: Date,
         default: Date.now,

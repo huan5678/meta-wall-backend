@@ -19,4 +19,7 @@ router.get('/user/google/callback', thirdPartyController.googleCallback);
 router.get('/user/line', thirdPartyController.loginWithLine);
 router.get('/user/line/callback', thirdPartyController.lineCallback);
 
+router.post('/:id/follow', isAuthor, userController.addFollower);
+router.delete('/:id/unfollow', isAuthor, userController.deleteFollower);
+
 module.exports = router;

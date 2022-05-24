@@ -17,10 +17,17 @@
     "debug": "~2.6.9",
     "dotenv": "^16.0.0",
     "express": "~4.16.1",
+    "image-size": "^1.0.1",
+    "imgur": "^2.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.1",
     "morgan": "~1.9.1",
+<<<<<<< HEAD
     "uuid": "^8.3.2",
+=======
+    "multer": "^1.4.4",
+    "tslib": "^2.4.0",
+>>>>>>> main
     "validator": "^13.7.0"
   },
   "repository": {

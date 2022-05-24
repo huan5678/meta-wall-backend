@@ -12,6 +12,7 @@ const errorHandleDev = require('./utils/errorHandleDev');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
+const uploadRouter = require('./routes/upload');
 const { traceDeprecation } = require('process');
 
 const app = express();
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use(usersRouter);
 app.use('/posts', postsRouter);
+app.use('/upload', uploadRouter);
 
 app.use((req, res, next) => {
   res.status(404).send({

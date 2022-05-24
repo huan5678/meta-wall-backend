@@ -98,7 +98,7 @@ const userController = {
       params: { id: followingID },
       user: { id: userID },
     } = req;
-    if (paramsId === userId) {
+    if (followingID === userID) {
       return next(appError(401, '您無法追蹤自己', next));
     }
     await User.updateOne(

@@ -101,13 +101,14 @@ const userController = {
     if (followingID === userID) {
       return next(appError(401, '您無法追蹤自己', next));
     }
+    const { name: followingName } = await User.findById(followingID);
     await User.updateOne(
       {
         _id: userID,
         'following.user': { $ne: followingID },
       },
       {
-        $addToSet: { following: { user: followingID } },
+        $addToSet: { following: { user: followingID, name: followingName } },
       },
     );
     await User.updateOne(

@@ -58,9 +58,6 @@ const userController = {
     const token = generateToken(user);
     return successHandle(res, '登入成功', { token, user });
   }),
-  userLogout: handleErrorAsync(async (req, res, next) => {
-    return successHandle(res, '使用者已成功登出');
-  }),
   getProfile: handleErrorAsync(async (req, res, next) => {
     const userId = req.user.id;
     const user = await User.findById(userId);
@@ -95,11 +92,6 @@ const userController = {
     await User.findByIdAndUpdate(userId, userData, { runValidators: true });
     const user = await User.findById(userId);
     return successHandle(res, '成功更新使用者資訊！', user);
-  }),
-  userCheckout: handleErrorAsync(async (req, res, next) => {
-    const userId = req.user.id;
-    const user = await User.findById(userId);
-    return successHandle(res, '認證成功，取得使用者資訊', user);
   }),
   addFollower: handleErrorAsync(async (req, res, next) => {
     const {

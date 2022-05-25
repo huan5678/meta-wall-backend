@@ -1,7 +1,6 @@
 const User = require('../models/user');
 const handleErrorAsync = require('../middleware/handleErrorAsync');
 const successHandle = require('../utils/successHandle');
-const appError = require('../utils/appError');
 const { generateToken } = require('../middleware/handleJWT');
 const { randomPassword } = require('../utils/passwordRule');
 const { v4: uuidv4 } = require('uuid');
@@ -78,10 +77,11 @@ const thirdPartyController = {
         photo: getData.data.picture,
       };
       const userData = await User.create(data);
-      return successHandle(res, '已成功已登入', userData);
+      const token = generateToken(userData);
+      return successHandle(res, '已成功已登入', { token, userData });
     }
-
-    successHandle(res, '已成功已登入', user);
+    const token = generateToken(user);
+    return successHandle(res, '已成功已登入', { token, user });
   }),
   loginWithFacebook: handleErrorAsync(async (req, res, next) => {
     const query = {
@@ -127,10 +127,11 @@ const thirdPartyController = {
         photo: getData.data.picture.url,
       };
       const userData = await User.create(data);
-      return successHandle(res, '已成功已登入', userData);
+      const token = generateToken(userData);
+      return successHandle(res, '已成功已登入', { token, userData });
     }
-
-    successHandle(res, '已成功已登入', user);
+    const token = generateToken(user);
+    return successHandle(res, '已成功已登入', { token, user });
   }),
   loginWithLine: handleErrorAsync(async (req, res, next) => {
     const query = {
@@ -172,8 +173,6 @@ const thirdPartyController = {
       },
     });
 
-    console.log('id_token', id_token);
-
     const verifyBody = {
       id_token,
       client_id: line_channel_id,
@@ -196,18 +195,19 @@ const thirdPartyController = {
     }).exec();
 
     if (!user) {
-      const lineData = {
+      const data = {
         email: lineEmail,
         name: getVerifyData.data.displayName,
         lineId: getData.data.userId,
         photo: getData.data.pictureUrl,
         password: randomPassword(),
       };
-      const userData = await User.create(lineData);
-      return successHandle(res, '已成功已登入', userData);
+      const userData = await User.create(data);
+      const token = generateToken(userData);
+      return successHandle(res, '已成功已登入', { token, userData });
     }
-
-    successHandle(res, '已成功已登入', user);
+    const token = generateToken(user);
+    return successHandle(res, '已成功已登入', { token, user });
   }),
 };
 

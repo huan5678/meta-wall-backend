@@ -44,6 +44,7 @@ const userSchema = {
   followers: [
     {
       _id: false,
+      name: { type: String, ref: 'User' },
       user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
       createdAt: {
         type: Date,

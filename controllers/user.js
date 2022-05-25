@@ -96,7 +96,7 @@ const userController = {
   addFollower: handleErrorAsync(async (req, res, next) => {
     const {
       params: { id: followingID },
-      user: { id: userID },
+      user: { id: userID, name: userName },
     } = req;
     if (followingID === userID) {
       return next(appError(401, '您無法追蹤自己', next));
@@ -116,7 +116,7 @@ const userController = {
         'followers.user': { $ne: userID },
       },
       {
-        $addToSet: { followers: { user: userID } },
+        $addToSet: { followers: { user: userID, name: userName } },
       },
     );
     res.status(200).json({

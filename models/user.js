@@ -15,6 +15,7 @@ const userSchema = {
       message: '請填寫正確 email 格式 name@domain.abc',
     },
     unique: true,
+    select: false,
   },
   password: {
     type: String,
@@ -26,6 +27,7 @@ const userSchema = {
       },
       message: '密碼需符合至少有 1 個數字， 1 個大寫英文， 1 個小寫英文',
     },
+    select: false,
   },
   name: {
     type: String,
@@ -64,10 +66,18 @@ const userSchema = {
     default: Date.now,
     select: false,
   },
-  googleId: String,
-  facebookId: String,
-  lineId: String,
-  githubId: String,
+  googleId: {
+    type: String,
+    select: false,
+  },
+  facebookId: {
+    type: String,
+    select: false,
+  },
+  lineId: {
+    type: String,
+    select: false,
+  },
   isValidator: {
     type: Boolean,
     default: false,

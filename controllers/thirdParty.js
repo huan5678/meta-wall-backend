@@ -6,6 +6,7 @@ const { generateToken } = require('../middleware/handleJWT');
 const { randomPassword } = require('../utils/passwordRule');
 const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
+const createEmail = require('../utils/createEmail');
 
 // const google_redirect_url = process.env.GOOGLE_REDIRECT_URL;
 const google_redirect_url = 'http://localhost:3000/user/google/callback';
@@ -137,7 +138,7 @@ const thirdPartyController = {
       client_id: line_channel_id,
       redirect_uri: line_redirect_url,
       state: line_state,
-      scope: 'profile',
+      scope: 'profile openid email',
       nonce: uuidv4(),
     };
     const auth_url = 'https://access.line.me/oauth2/v2.1/authorize';
@@ -163,32 +164,43 @@ const thirdPartyController = {
       headers: tokenHeader,
     });
 
-    const { access_token } = response.data;
+    const { access_token, id_token } = response.data;
 
-    console.log('data = ', response.data);
-    console.log('access = ', access_token);
-
-    const getVerify = await axios.get(
-      `https://api.line.me/oauth2/v2.1/verify?access_token=${access_token}`,
-    );
-    const getProfile = await axios.get('https://api.line.me/v2/profile', {
+    const getData = await axios.get('https://api.line.me/v2/profile', {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
     });
-    const lineUid = getProfile.data.userId;
-    console.log(lineUid);
-    const user = await User.findOne({ 'thirdPartyAuthor.lineId': lineUid });
-    // console.log({
-    //   verify: getVerify.data,
-    //   profile: getProfile.data,
-    // });
+
+    console.log('id_token', id_token);
+
+    const verifyBody = {
+      id_token,
+      client_id: line_channel_id,
+    };
+
+    const verifyBodyString = new URLSearchParams(verifyBody).toString();
+
+    const getVerifyData = await axios.post(
+      'https://api.line.me/oauth2/v2.1/verify',
+      verifyBodyString,
+      {
+        headers: tokenHeader,
+      },
+    );
+    const lineId = getData.data.userId;
+    const lineEmail = getVerifyData.data.email;
+
+    const user = await User.findOne({
+      $or: [{ lineId: lineId }, { email: lineEmail }],
+    }).exec();
 
     if (!user) {
       const lineData = {
-        name: getProfile.data.displayName,
-        lineId: getProfile.data.userId,
-        photo: getProfile.data.pictureUrl,
+        email: lineEmail,
+        name: getVerifyData.data.displayName,
+        lineId: getData.data.userId,
+        photo: getData.data.pictureUrl,
         password: randomPassword(),
       };
       const userData = await User.create(lineData);

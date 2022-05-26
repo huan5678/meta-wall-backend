@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "d9f08576-36af-48af-84e6-764431cd9fd7",
-		"name": "metawall-backend-api local",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "bed70724-c946-4dcd-acb6-3794e30dfc51",
+		"name": "metawall-backend-api local Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19854101"
 	},
 	"item": [
 		{
@@ -195,12 +196,7 @@
 							"type": "file",
 							"src": []
 						}
-					],
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					]
 				},
 				"url": {
 					"raw": "{{URL}}/upload",
@@ -277,6 +273,61 @@
 					"path": [
 						"628c8224166ea5bb7caa7475",
 						"unfollow"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "取得單一貼文",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3000/posts/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"posts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "編輯貼文",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"content\": \"８６６\",\n        \"image\": \"\",\n        \"name\": \"士桓老大\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3000/posts/6289f7dce4083fc31bda6b07",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"posts",
+						"6289f7dce4083fc31bda6b07"
 					]
 				}
 			},

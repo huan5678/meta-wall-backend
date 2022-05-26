@@ -91,7 +91,8 @@ const userController = {
     const userData = { name, photo, gender };
     await User.findByIdAndUpdate(userId, userData, { runValidators: true });
     const user = await User.findById(userId);
-    return successHandle(res, '成功更新使用者資訊！', user);
+    const returnUser = {name:user.name, gender: user.gender, photo: user.photo};
+    return successHandle(res, '成功更新使用者資訊！', returnUser);
   }),
   addFollower: handleErrorAsync(async (req, res, next) => {
     const {

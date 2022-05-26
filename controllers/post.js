@@ -25,12 +25,16 @@ const postController = {
     return successHandle(res, '成功新增一則貼文!!', returnPost);
   }),
   postDelete: handleErrorAsync(async (req, res, next) => {
-    const _id = req.params.id;
-    if (!_id) {
+    const id = req.params.id;
+    if (!id) {
       return next(appError(400, '無此貼文', next));
     }
-    let deleteResult = await Post.findByIdAndDelete({ id: _id });
-    return successHandle(res, '刪除一則貼文', deleteResult);
+    let deleteResult = await Post.findByIdAndDelete({ _id: id});
+    if(!deleteResult){
+      return next( appError(400, '刪除貼文失敗', next));
+    }
+
+    return successHandle(res, '刪除一則貼文');
   }),
 };
 

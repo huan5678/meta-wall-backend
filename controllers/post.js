@@ -78,5 +78,16 @@ const postController = {
     await Post.findOneAndUpdate({ _id }, { $pull: { likes: req.user.id } });
     successHandle(res, '刪除一個讚', { postId: _id, useId: req.user.id });
   }),
+  postPatch: handleErrorAsync(async (req, res, next) => {
+    const { body } = req;
+    const { id } = req.params;
+    const editPost = await Post.findByIdAndUpdate(id, body);
+    if (body.content && editPost) {
+      console.log(editPost);
+      const editda = await Post.findById(editPost._id);
+      successHandle(res, '成功編輯一則貼文!!', editda);
+    }
+    return next(appError(400, '請檢查content 資料', next));
+  }),
 };
 module.exports = postController;

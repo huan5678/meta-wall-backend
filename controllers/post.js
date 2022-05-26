@@ -5,15 +5,7 @@ const appError = require('../utils/appError');
 
 const postController = {
   postCreate: handleErrorAsync(async (req, res, next) => {
-    let image;
-    if(!req.body.image){
-          image = '';
-      }else{
-        image = req.body.image;
-      }
-
-    const { content } = req.body;
-
+    const { content, image = '', } = req.body;
     
     if (content == undefined) {
       return next(appError(400, '你沒有填寫 content 資料', next));

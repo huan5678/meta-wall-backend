@@ -17,7 +17,7 @@ const postSchema = new mongoose.Schema(
       select: false,
     },
     userId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: [true, '貼文ID必須'],
     },
     likes: {

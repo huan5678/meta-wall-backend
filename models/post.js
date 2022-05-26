@@ -18,7 +18,7 @@ const postSchema = new mongoose.Schema(
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      required: [true, '貼文ID必須'],
+      required: [true, '貼文者的ID為必要項目'],
     },
     likes: {
       type: [mongoose.Schema.Types.ObjectId],

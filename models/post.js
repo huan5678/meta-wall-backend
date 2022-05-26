@@ -16,9 +16,9 @@ const postSchema = new mongoose.Schema(
       default: Date.now,
       select: false,
     },
-    name: {
-      type: String,
-      required: [true, '貼文姓名未填寫'],
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, '貼文者的ID為必要項目'],
     },
     likes: {
       type: [mongoose.Schema.Types.ObjectId],

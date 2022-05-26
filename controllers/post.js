@@ -5,15 +5,24 @@ const appError = require('../utils/appError');
 
 const postController = {
   postCreate: handleErrorAsync(async (req, res, next) => {
-    const { content } = req.body;
+    const { content, image = '', } = req.body;
+    
     if (content == undefined) {
       return next(appError(400, '你沒有填寫 content 資料', next));
     }
+    
     const newPost = await Post.create({
-      name: req.user.name,
+      userId: req.user._id,
       content,
+      image
     });
-    return successHandle(res, '成功新增一則貼文!!', newPost);
+    const returnPost =  {
+      id:newPost.userId,
+      content:newPost.content,
+      image:newPost.image,
+    }
+    
+    return successHandle(res, '成功新增一則貼文!!', returnPost);
   }),
   postDelete: handleErrorAsync(async (req, res, next) => {
     const _id = req.params.id;

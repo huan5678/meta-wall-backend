@@ -21,8 +21,11 @@ const postController = {
       return next(appError(400, '無此貼文', next));
     }
     let deleteResult = await Post.findByIdAndDelete({ _id: id});
-    console.log(deleteResult);
-    return successHandle(res, '刪除一則貼文', deleteResult);
+    if(!deleteResult){
+      return next( appError(400, '刪除貼文失敗', next));
+    }
+
+    return successHandle(res, '刪除一則貼文');
   }),
 };
 

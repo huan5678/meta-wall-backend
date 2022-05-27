@@ -20,10 +20,12 @@ const postSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: [true, '貼文者的ID為必要項目'],
     },
-    likes: {
-      type: [mongoose.Schema.Types.ObjectId],
-      default: [],
-    },
+    likes: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+      },
+    ],
   },
   { versionKey: false },
 );

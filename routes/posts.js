@@ -11,7 +11,9 @@ router.get('/', async (req, res) => {
   successHandle(res, '成功撈取所有貼文', post);
 });
 
-router.post('/create', isAuthor, postController.postCreate);
+router.post('/', isAuthor, postController.postCreate);
 router.delete('/:id', isAuthor, postController.postDelete);
+router.post('/:id/likes', isAuthor, postController.addLike);
+router.delete('/:id/likes', isAuthor, postController.deleteLike);
 
 module.exports = router;

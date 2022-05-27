@@ -39,7 +39,13 @@ const userController = {
       isValidator: true,
     };
     const currentUser = await User.create(userData);
-    return successHandle(res, '成功建立使用者帳號', currentUser);
+    const userPayload = {
+      id: currentUser._id,
+      name: currentUser.name,
+      photo: currentUser.photo,
+    };
+    const token = generateToken(currentUser);
+    return successHandle(res, '成功建立使用者帳號', { token, user: userPayload });
   }),
   userLogin: handleErrorAsync(async (req, res, next) => {
     const { email, password } = req.body;
@@ -55,8 +61,13 @@ const userController = {
     if (!checkPassword) {
       return appError(400, '請確認密碼是否正確，請再嘗試輸入', next);
     }
+    const userPayload = {
+      id: user._id,
+      name: user.name,
+      photo: user.photo,
+    };
     const token = generateToken(user);
-    return successHandle(res, '登入成功', { token, user });
+    return successHandle(res, '登入成功', { token, user: userPayload });
   }),
   getProfile: handleErrorAsync(async (req, res, next) => {
     const userId = req.user.id;

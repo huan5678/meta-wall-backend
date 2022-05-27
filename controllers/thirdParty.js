@@ -123,7 +123,7 @@ const thirdPartyController = {
         name: getData.data.name,
         password: randomPassword(),
         facebookId: getData.data.id,
-        email: getData.data.email,
+        email: getData.data.email || createEmail(),
         photo: getData.data.picture.url,
       };
       const userData = await User.create(data);
@@ -196,7 +196,7 @@ const thirdPartyController = {
 
     if (!user) {
       const data = {
-        email: lineEmail,
+        email: lineEmail || createEmail(),
         name: getVerifyData.data.displayName,
         lineId: getData.data.userId,
         photo: getData.data.pictureUrl,

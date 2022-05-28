@@ -89,5 +89,15 @@ const postController = {
     }
     return next(appError(400, '請檢查content 資料', next));
   }),
+  addLike: handleErrorAsync(async (req, res, next) => {
+    const _id = req.params.id;
+    await Post.findOneAndUpdate({ _id }, { $addToSet: { likes: req.user.id } });
+    successHandle(res, '新增一個讚');
+  }),
+  deleteLike: handleErrorAsync(async (req, res, next) => {
+    const _id = req.params.id;
+    await Post.findOneAndUpdate({ _id }, { $pull: { likes: req.user.id } });
+    successHandle(res, '刪除一個讚');
+  }),
 };
 module.exports = postController;

@@ -156,11 +156,14 @@ const userController = {
     });
   }),
   getLikesList: handleErrorAsync(async (req, res, next) => {
-    const likeList = await Post.find({
-      likes: { $in: [req.user.id] },
-    }).populate({
+    const likeList = await Post.find(
+      {
+        likes: { $in: [req.user.id] },
+      },
+      { content: false },
+    ).populate({
       path: 'userId',
-      select: 'name _id',
+      select: '_id userId',
     });
     return successHandle(res, '成功取得按讚表單', likeList);
   }),

@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "bed70724-c946-4dcd-acb6-3794e30dfc51",
-		"name": "metawall-backend-api local Copy",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "19854101"
+		"_postman_id": "8419bc83-e6c7-4847-9134-94d4c489daf1",
+		"name": "metawall-backend-api local",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -328,6 +327,113 @@
 					"path": [
 						"posts",
 						"6289f7dce4083fc31bda6b07"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增一個讚",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"content\":\"test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/posts/6290953a1a6ca4bb9ac7fcf1/likes",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"posts",
+						"6290953a1a6ca4bb9ac7fcf1",
+						"likes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "移除一個讚",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"content\":\"test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/posts/6290896fc5061021e8212a1f/likes",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"posts",
+						"6290896fc5061021e8212a1f",
+						"likes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "取得likesList",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/user/getLikesList",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"user",
+						"getLikesList"
 					]
 				}
 			},

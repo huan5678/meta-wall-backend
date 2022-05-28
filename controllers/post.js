@@ -48,16 +48,6 @@ const postController = {
 
     return successHandle(res, '刪除一則貼文');
   }),
-  addLike: handleErrorAsync(async (req, res, next) => {
-    const _id = req.params.id;
-    await Post.findOneAndUpdate({ _id }, { $addToSet: { likes: req.user.id } });
-    successHandle(res, '新增一個讚', { postId: _id, useId: req.user.id });
-  }),
-  deleteLike: handleErrorAsync(async (req, res, next) => {
-    const _id = req.params.id;
-    await Post.findOneAndUpdate({ _id }, { $pull: { likes: req.user.id } });
-    successHandle(res, '刪除一個讚', { postId: _id, useId: req.user.id });
-  }),
   postPatch: handleErrorAsync(async (req, res, next) => {
     const { body } = req;
     const { id } = req.params;
@@ -65,27 +55,6 @@ const postController = {
     if (body.content && editPost) {
       const editData = await Post.findById(editPost._id);
       successHandle(res, '成功編輯一則貼文!!', editData);
-    }
-    return next(appError(400, '請檢查content 資料', next));
-  }),
-  addLike: handleErrorAsync(async (req, res, next) => {
-    const _id = req.params.id;
-    await Post.findOneAndUpdate({ _id }, { $addToSet: { likes: req.user.id } });
-    successHandle(res, '新增一個讚', { postId: _id, useId: req.user.id });
-  }),
-  deleteLike: handleErrorAsync(async (req, res, next) => {
-    const _id = req.params.id;
-    await Post.findOneAndUpdate({ _id }, { $pull: { likes: req.user.id } });
-    successHandle(res, '刪除一個讚', { postId: _id, useId: req.user.id });
-  }),
-  postPatch: handleErrorAsync(async (req, res, next) => {
-    const { body } = req;
-    const { id } = req.params;
-    const editPost = await Post.findByIdAndUpdate(id, body);
-    if (body.content && editPost) {
-      console.log(editPost);
-      const editda = await Post.findById(editPost._id);
-      successHandle(res, '成功編輯一則貼文!!', editda);
     }
     return next(appError(400, '請檢查content 資料', next));
   }),

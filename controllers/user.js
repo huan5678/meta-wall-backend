@@ -6,6 +6,7 @@ const successHandle = require('../utils/successHandle');
 const appError = require('../utils/appError');
 const { generateToken } = require('../middleware/handleJWT');
 const { passwordCheck } = require('../utils/passwordRule');
+const Post = require('../models/post');
 
 const userController = {
   userCreate: handleErrorAsync(async (req, res, next) => {
@@ -91,7 +92,7 @@ const userController = {
     const userData = { name, photo, gender };
     await User.findByIdAndUpdate(userId, userData, { runValidators: true });
     const user = await User.findById(userId);
-    const returnUser = {name:user.name, gender: user.gender, photo: user.photo};
+    const returnUser = { name: user.name, gender: user.gender, photo: user.photo };
     return successHandle(res, '成功更新使用者資訊！', returnUser);
   }),
   addFollower: handleErrorAsync(async (req, res, next) => {
@@ -153,6 +154,15 @@ const userController = {
       status: 'success',
       message: '您已成功取消追蹤！',
     });
+  }),
+  getLikesList: handleErrorAsync(async (req, res, next) => {
+    const likeList = await Post.find(
+      {
+        likes: { $in: [req.user.id] },
+      },
+      { content: false, image: false, likes: false },
+    );
+    return successHandle(res, '成功取得按讚表單', likeList);
   }),
 };
 

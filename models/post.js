@@ -14,11 +14,11 @@ const postSchema = new mongoose.Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      select: false,
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       required: [true, '貼文者的ID為必要項目'],
+      ref: 'User',
     },
     likes: {
       type: [mongoose.Schema.Types.ObjectId],
@@ -27,6 +27,13 @@ const postSchema = new mongoose.Schema(
   },
   { versionKey: false },
 );
+postSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'userId',
+    select: 'name photo _id',
+  });
+  next();
+});
 const Post = mongoose.model('Post', postSchema);
 
 module.exports = Post;

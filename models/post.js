@@ -18,19 +18,18 @@ const postSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       required: [true, '貼文者的ID為必要項目'],
+      ref: 'User',
     },
-    likes: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User',
-      },
-    ],
+    likes: {
+      type: [mongoose.Schema.Types.ObjectId],
+      default: [],
+    },
   },
   { versionKey: false },
 );
 postSchema.pre(/^find/, function (next) {
   this.populate({
-    path: 'likes',
+    path: 'userId',
     select: 'name photo _id',
   });
   next();

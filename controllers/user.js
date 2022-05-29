@@ -160,11 +160,8 @@ const userController = {
       {
         likes: { $in: [req.user.id] },
       },
-      { content: false },
-    ).populate({
-      path: 'userId',
-      select: '_id userId',
-    });
+      { content: false, image: false, likes: false },
+    );
     return successHandle(res, '成功取得按讚表單', likeList);
   }),
 };

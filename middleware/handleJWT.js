@@ -8,7 +8,7 @@ const jwtSecret = process.env.JWT_SECRET;
 const jwtExpires = process.env.JWT_EXPIRES_DAY;
 
 const isAuthor = handleErrorAsync(async (req, res, next) => {
-  const accessToken = req.header('Authorization').split('Bearer ').pop();
+  const accessToken = req.header('Authorization')?.split('Bearer ').pop();
   if (!accessToken) {
     return appError(401, '未帶入驗證碼，請重新登入！', next);
   }

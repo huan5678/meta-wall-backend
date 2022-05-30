@@ -20,5 +20,6 @@ router.get('/user/line/callback', thirdPartyController.lineCallback);
 router.post('/:id/follow', isAuthor, userController.addFollower);
 router.delete('/:id/unfollow', isAuthor, userController.deleteFollower);
 router.get('/user/getLikesList', isAuthor, userController.getLikesList);
+router.get('/getFollowList', isAuthor, userController.getFollowList);
 
 module.exports = router;

@@ -10,9 +10,14 @@ const chatSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-    userId: {
+    currentUserId: {
       type: mongoose.Schema.Types.ObjectId,
-      required: [true, '使用者的 ID 為必要項目'],
+      required: [true, '使用者自身的 ID 為必要項目'],
+      ref: 'User',
+    },
+    targetUserId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, '對象使用者的 ID 為必要項目'],
       ref: 'User',
     },
   },
@@ -25,6 +30,6 @@ chatSchema.pre(/^find/, function (next) {
   });
   next();
 });
-const Chat = mongoose.model('Chat', chatSchema);
+const PM = mongoose.model('Chat', chatSchema);
 
-module.exports = Chat;
+module.exports = PM;

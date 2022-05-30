@@ -1,14 +1,14 @@
 const ws = new WebSocket('ws://localhost:3000');
-
 const form = document.getElementById('form');
 const input = document.getElementById('input');
-
+const messages = document.getElementById('messages');
 const loginForm = document.getElementById('login');
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   if (input.value) {
-    ws.send(JSON.stringify({ user: '_id', message: input.value }));
+    sendChat(input.value);
+    // ws.send(JSON.stringify({ user: '_id', message: input.value }));
     input.value = '';
   }
 });
@@ -27,24 +27,42 @@ loginForm.addEventListener('submit', (e) => {
     const { data } = res.data;
     const userName = data.user.name;
     const userId = data.user.id;
-    let message = 'Hi Hi';
-    ws.send(JSON.stringify({ userID: userId, name: userName, message }));
+    console.log('token = ', data.token);
+    console.log(userId, userName);
   });
 });
 
 ws.onopen = () => {
-  const data = JSON.stringify({ user: '_id', status: 'join' });
-  ws.send(data);
   console.log('open connection');
 };
 
 ws.onclose = () => {
-  const data = JSON.stringify({ user: '_id', status: 'leave' });
-  ws.send(data);
   console.log('close connection');
 };
 
 ws.onmessage = (e) => {
-  const msg = e.data;
+  const item = document.createElement('li');
+  const msg = JSON.parse(e.data);
+  item.textContent = msg.message;
+  messages.appendChild(item);
+  window.scrollTo(0, document.body.scrollHeight);
   console.dir(msg);
 };
+
+function sendChat(msg) {
+  const data = JSON.stringify({
+    content: msg,
+  });
+  const config = {
+    method: 'post',
+    url: 'http://localhost:3000/chat',
+    headers: {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTQ1ZDZiZGVhNmQ1ODMwNTYzNGQyMiIsIm5hbWUiOiLlsI_lgpHigKflr4zlipvlo6siLCJwaG90byI6IiIsImlhdCI6MTY1Mzg5NzQ3MywiZXhwIjoxNjU0NTAyMjczfQ.vzaMEywac1Kfwq7jT6dmIK8IPUSB88oy8eg1mb1byKY`,
+      'Content-Type': 'application/json',
+    },
+    data: data,
+  };
+  axios(config)
+    .then((res) => console.log(res.data))
+    .catch((err) => console.dir(err));
+}

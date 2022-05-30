@@ -25,6 +25,6 @@ chatSchema.pre(/^find/, function (next) {
   });
   next();
 });
-const GroupChat = mongoose.model('Chat', chatSchema);
+const GroupChat = mongoose.model('group-chat', chatSchema);
 
 module.exports = GroupChat;

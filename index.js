@@ -2,7 +2,6 @@ const ws = new WebSocket('ws://localhost:3000');
 const form = document.getElementById('form');
 const input = document.getElementById('input');
 const messages = document.getElementById('messages');
-const loginForm = document.getElementById('login');
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -11,25 +10,6 @@ form.addEventListener('submit', (e) => {
     // ws.send(JSON.stringify({ user: '_id', message: input.value }));
     input.value = '';
   }
-});
-
-loginForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const data = new FormData(loginForm);
-  const email = data.get('email');
-  const password = data.get('password');
-  const baseUrl = 'http://localhost:3000/user/login';
-  const result = {
-    email,
-    password,
-  };
-  axios.post(baseUrl, result).then((res) => {
-    const { data } = res.data;
-    const userName = data.user.name;
-    const userId = data.user.id;
-    console.log('token = ', data.token);
-    console.log(userId, userName);
-  });
 });
 
 ws.onopen = () => {
@@ -41,23 +21,35 @@ ws.onclose = () => {
 };
 
 ws.onmessage = (e) => {
-  const item = document.createElement('li');
-  const msg = JSON.parse(e.data);
-  item.textContent = msg.message;
-  messages.appendChild(item);
+  console.log(e);
+  const data = JSON.parse(e.data);
+  const chats = data.Chats;
+  if (typeof chats === 'object') {
+    chats.forEach((chat) => {
+      const item = document.createElement('li');
+      item.textContent = chat.content;
+      messages.appendChild(item);
+    });
+  } else {
+    const item = document.createElement('li');
+    item.textContent = chats.content;
+    messages.appendChild(item);
+  }
   window.scrollTo(0, document.body.scrollHeight);
-  console.dir(msg);
+  console.dir(data);
 };
 
 function sendChat(msg) {
   const data = JSON.stringify({
     content: msg,
   });
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTQ1ZDZiZGVhNmQ1ODMwNTYzNGQyMiIsIm5hbWUiOiLlsI_lgpHigKflr4zlipvlo6siLCJwaG90byI6IiIsImlhdCI6MTY1Mzg5NzQ3MywiZXhwIjoxNjU0NTAyMjczfQ.vzaMEywac1Kfwq7jT6dmIK8IPUSB88oy8eg1mb1byKY';
   const config = {
     method: 'post',
     url: 'http://localhost:3000/chat',
     headers: {
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTQ1ZDZiZGVhNmQ1ODMwNTYzNGQyMiIsIm5hbWUiOiLlsI_lgpHigKflr4zlipvlo6siLCJwaG90byI6IiIsImlhdCI6MTY1Mzg5NzQ3MywiZXhwIjoxNjU0NTAyMjczfQ.vzaMEywac1Kfwq7jT6dmIK8IPUSB88oy8eg1mb1byKY`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
     data: data,
@@ -65,4 +57,10 @@ function sendChat(msg) {
   axios(config)
     .then((res) => console.log(res.data))
     .catch((err) => console.dir(err));
+  ws.send(
+    JSON.stringify({
+      token,
+      content: msg,
+    }),
+  );
 }

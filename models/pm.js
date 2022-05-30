@@ -30,6 +30,6 @@ chatSchema.pre(/^find/, function (next) {
   });
   next();
 });
-const PM = mongoose.model('Chat', chatSchema);
+const PM = mongoose.model('PM', chatSchema);
 
 module.exports = PM;

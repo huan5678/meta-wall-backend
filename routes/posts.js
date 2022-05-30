@@ -269,7 +269,17 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: 要修改的貼文id 
+ *         description: 要修改的貼文id
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               content:
+ *                 type: string
+ *                 example: I am Malenia 
  *     security:
  *       - bearerAuth: []
  *     description: 修改貼文

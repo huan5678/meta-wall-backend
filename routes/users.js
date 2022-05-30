@@ -437,13 +437,13 @@ module.exports = router;
  *   get:
  *     tags:
  *       - User 使用者
- *     summary: 取得按讚名單
+ *     summary: 取得按讚表單
  *     security:
  *       - bearerAuth: []
- *     description: 取得按讚名單
+ *     description: 取得按讚表單
  *     responses:
  *       200:
- *         description: 成功取得按讚名單
+ *         description: 成功取得按讚表單
  *         content:
  *           application/json:
  *             schema:

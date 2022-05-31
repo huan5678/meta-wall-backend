@@ -13,5 +13,7 @@ router.delete('/:id', isAuthor, postController.postDelete);
 router.patch('/:id', isAuthor, postController.postPatch);
 router.post('/:id/likes', isAuthor, postController.addLike);
 router.delete('/:id/likes', isAuthor, postController.deleteLike);
+router.post('/:id/comment', isAuthor, postController.addComment);
+router.get('/user/:id', postController.getUserPosts);
 
 module.exports = router;

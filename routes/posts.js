@@ -6,8 +6,8 @@ const postController = require('../controllers/post');
 const { isAuthor } = require('../middleware/handleJWT');
 
 //資料全撈
-router.get('/', postController.getAll);
-router.get('/:id', postController.getOne);
+router.get('/', isAuthor, postController.getAll);
+router.get('/:id', isAuthor, postController.getOne);
 router.post('/create', isAuthor, postController.postCreate);
 router.delete('/:id', isAuthor, postController.postDelete);
 router.patch('/:id', isAuthor, postController.postPatch);

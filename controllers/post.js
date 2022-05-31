@@ -1,11 +1,15 @@
 const Post = require('../models/post');
+const User = require('../models/user');
 const handleErrorAsync = require('../middleware/handleErrorAsync');
 const successHandle = require('../utils/successHandle');
 const appError = require('../utils/appError');
 
 const postController = {
   getAll: handleErrorAsync(async (req, res, next) => {
-    const post = await Post.find();
+    const post = await Post.find().populate({
+      path: 'userId',
+      select: 'name photo createdAt',
+    });
     successHandle(res, '成功撈取所有貼文', post);
   }),
   getOne: handleErrorAsync(async (req, res, next) => {

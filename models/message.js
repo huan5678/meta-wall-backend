@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const chatSchema = new mongoose.Schema(
+const messageSchema = new mongoose.Schema(
   {
     content: {
       type: String,
@@ -18,13 +18,13 @@ const chatSchema = new mongoose.Schema(
   },
   { versionKey: false },
 );
-chatSchema.pre(/^find/, function (next) {
+messageSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'userId',
     select: 'name photo _id',
   });
   next();
 });
-const GroupChat = mongoose.model('group-chat', chatSchema);
+const Message = mongoose.model('Message', messageSchema);
 
-module.exports = GroupChat;
+module.exports = Message;

@@ -1,4 +1,4 @@
-const ws = new WebSocket('ws://localhost:3000');
+const socket = io('/', { transports: ['websocket'] });
 const form = document.getElementById('form');
 const input = document.getElementById('input');
 const messages = document.getElementById('messages');
@@ -12,32 +12,38 @@ form.addEventListener('submit', (e) => {
   }
 });
 
-ws.onopen = () => {
-  console.log('open connection');
-};
+// socket.on('history', (obj) => {
+//   if (obj.length > 0) {
+//     appendData(obj);
+//   }
+// });
 
-ws.onclose = () => {
-  console.log('close connection');
-};
+// socket.on('message', (obj) => {
+//   console.log(obj);
+//   appendData([obj]);
+// });
 
-ws.onmessage = (e) => {
-  console.log(e);
-  const data = JSON.parse(e.data);
-  const chats = data.Chats;
-  if (typeof chats === 'object') {
-    chats.forEach((chat) => {
-      const item = document.createElement('li');
-      item.textContent = chat.content;
-      messages.appendChild(item);
-    });
-  } else {
-    const item = document.createElement('li');
-    item.textContent = chats.content;
-    messages.appendChild(item);
-  }
+function appendData(obj) {
+  let html = messages.innerHTML;
+
+  obj.forEach((element) => {
+    html += `
+            <li class="chat">
+                <div class="group">
+                    <div class="name">${element.name}：</div>
+                    <div class="msg">${element.msg}</div>
+                </div>
+                <div class="time">${moment(element.time).fromNow()}</div>
+            </li>
+            `;
+  });
+  messages.innerHTML = html.trim();
+  scrollWindow();
+}
+
+function scrollWindow() {
   window.scrollTo(0, document.body.scrollHeight);
-  console.dir(data);
-};
+}
 
 function sendChat(msg) {
   const data = JSON.stringify({
@@ -57,10 +63,4 @@ function sendChat(msg) {
   axios(config)
     .then((res) => console.log(res.data))
     .catch((err) => console.dir(err));
-  ws.send(
-    JSON.stringify({
-      token,
-      content: msg,
-    }),
-  );
 }

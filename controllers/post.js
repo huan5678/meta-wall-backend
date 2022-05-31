@@ -49,12 +49,11 @@ const postController = {
     return successHandle(res, '刪除一則貼文');
   }),
   postPatch: handleErrorAsync(async (req, res, next) => {
-    const { body } = req;
+    const { content = '', image = '', name = '' } = req.body;
     const { id } = req.params;
-    const editPost = await Post.findByIdAndUpdate(id, body);
-    if (body.content && editPost) {
-      const editData = await Post.findById(editPost._id);
-      successHandle(res, '成功編輯一則貼文!!', editData);
+    const editPost = await Post.findByIdAndUpdate({ id }, { content, image, name }, { new: true });
+    if (content && editPost) {
+      successHandle(res, '成功編輯一則貼文!!', editPost);
     }
     return next(appError(400, '請檢查content 資料', next));
   }),

@@ -1,7 +1,11 @@
-const socket = io('/', { transports: ['websocket'] });
+const socket = io('ws://localhost:3000/');
 const form = document.getElementById('form');
 const input = document.getElementById('input');
 const messages = document.getElementById('messages');
+const connect = document.getElementById('connect');
+
+const token =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTQ1ZDZiZGVhNmQ1ODMwNTYzNGQyMiIsIm5hbWUiOiLlsI_lgpHigKflr4zlipvlo6siLCJwaG90byI6IiIsImlhdCI6MTY1Mzg5NzQ3MywiZXhwIjoxNjU0NTAyMjczfQ.vzaMEywac1Kfwq7jT6dmIK8IPUSB88oy8eg1mb1byKY';
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -12,28 +16,35 @@ form.addEventListener('submit', (e) => {
   }
 });
 
-// socket.on('history', (obj) => {
-//   if (obj.length > 0) {
-//     appendData(obj);
-//   }
-// });
+connect.addEventListener('click', (e) => getMessages());
 
-// socket.on('message', (obj) => {
-//   console.log(obj);
-//   appendData([obj]);
-// });
+socket.on('history', (obj) => {
+  if (obj.length > 0) {
+    appendData(obj);
+  }
+});
+
+socket.on('message', (obj) => {
+  console.log(obj);
+  appendData([obj]);
+});
+
+socket.on('chatMessage', (obj) => {
+  console.log(obj);
+  appendData([obj]);
+});
 
 function appendData(obj) {
   let html = messages.innerHTML;
 
   obj.forEach((element) => {
     html += `
-            <li class="chat">
-                <div class="group">
-                    <div class="name">${element.name}：</div>
-                    <div class="msg">${element.msg}</div>
+            <li class="flex justify-between border-b-2 border-gray-300 py-2">
+                <div class="flex">
+                    <div class="font-medium text-gray-500 text-xl">${element.userId.name}：</div>
+                    <div class="text-gray-600">${element.content}</div>
                 </div>
-                <div class="time">${moment(element.time).fromNow()}</div>
+                <div class="text-gray-400">${moment(element.ceratedAt).fromNow()}</div>
             </li>
             `;
   });
@@ -49,8 +60,6 @@ function sendChat(msg) {
   const data = JSON.stringify({
     content: msg,
   });
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTQ1ZDZiZGVhNmQ1ODMwNTYzNGQyMiIsIm5hbWUiOiLlsI_lgpHigKflr4zlipvlo6siLCJwaG90byI6IiIsImlhdCI6MTY1Mzg5NzQ3MywiZXhwIjoxNjU0NTAyMjczfQ.vzaMEywac1Kfwq7jT6dmIK8IPUSB88oy8eg1mb1byKY';
   const config = {
     method: 'post',
     url: 'http://localhost:3000/chat',
@@ -59,6 +68,20 @@ function sendChat(msg) {
       'Content-Type': 'application/json',
     },
     data: data,
+  };
+  axios(config)
+    .then((res) => console.log(res.data))
+    .catch((err) => console.dir(err));
+}
+
+function getMessages() {
+  const config = {
+    method: 'get',
+    url: 'http://localhost:3000/chat/',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
   };
   axios(config)
     .then((res) => console.log(res.data))

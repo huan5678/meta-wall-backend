@@ -20,7 +20,8 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
-webSocketServer(server);
+const io = webSocketServer(server);
+app.set('io', io);
 /**
  * Listen on provided port, on all network interfaces.
  */

@@ -20,7 +20,7 @@ class SocketHandler {
   storeMessages(data) {
     console.log(data);
     const newMessages = new Messages({
-      userId: data.user._id,
+      userId: data.id,
       content: data.msg,
     });
 

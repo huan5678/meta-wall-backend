@@ -18,6 +18,14 @@ const { traceDeprecation } = require('process');
 
 const app = express();
 
+const io = require('socket.io')();
+app.io = io;
+require('./services/websocket')(io);
+app.use(function (req, res, next) {
+  res.io = io;
+  next();
+});
+
 require('./connections');
 
 app.set('view engine', 'html');

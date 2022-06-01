@@ -7,7 +7,7 @@
 const app = require('../app');
 const debug = require('debug')('backend:server');
 const http = require('http');
-const webSocketServer = require('../services/websocket');
+
 /**
  * Get port from environment and store in Express.
  */
@@ -20,8 +20,14 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
-const io = webSocketServer(server);
-module.exports = io;
+const io = app.io;
+io.listen(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+    credential: true,
+  },
+});
 /**
  * Listen on provided port, on all network interfaces.
  */

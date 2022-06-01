@@ -74,7 +74,7 @@ const thirdPartyController = {
         password: randomPassword(),
         googleId: getData.data.id,
         email: getData.data.email,
-        photo: getData.data.picture,
+        avatar: getData.data.picture,
       };
       const userData = await User.create(data);
       const token = generateToken(userData);
@@ -124,7 +124,7 @@ const thirdPartyController = {
         password: randomPassword(),
         facebookId: getData.data.id,
         email: getData.data.email || createEmail(),
-        photo: getData.data.picture.url,
+        avatar: getData.data.picture.url,
       };
       const userData = await User.create(data);
       const token = generateToken(userData);
@@ -199,7 +199,7 @@ const thirdPartyController = {
         email: lineEmail || createEmail(),
         name: getVerifyData.data.displayName,
         lineId: getData.data.userId,
-        photo: getData.data.pictureUrl,
+        avatar: getData.data.pictureUrl,
         password: randomPassword(),
       };
       const userData = await User.create(data);

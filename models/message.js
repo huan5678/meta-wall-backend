@@ -1,10 +1,4 @@
 const mongoose = require('mongoose');
-const http = require('http');
-const express = require('express');
-const socketio = require('socket.io');
-const app = express();
-const server = http.createServer(app);
-const io = socketio(server);
 
 const messageSchema = new mongoose.Schema(
   {
@@ -27,18 +21,11 @@ const messageSchema = new mongoose.Schema(
 messageSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'userId',
-    select: 'name photo _id',
+    select: 'name avatar _id',
   });
   next();
 });
 
-messageSchema.pre('save', async function () {
-  const data = {
-    userId: this.userId,
-    content: this.content,
-  };
-  io.emit('message', data);
-});
 const Message = mongoose.model('Message', messageSchema);
 
 module.exports = Message;

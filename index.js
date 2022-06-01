@@ -1,4 +1,4 @@
-const socket = io('ws://localhost:3000/');
+const socket = io('http://localhost:3000/');
 const form = document.getElementById('form');
 const input = document.getElementById('input');
 const messages = document.getElementById('messages');
@@ -29,7 +29,7 @@ socket.on('message', (obj) => {
   appendData([obj]);
 });
 
-socket.on('chatMessage', (obj) => {
+socket.on('chat message', (obj) => {
   console.log(obj);
   appendData([obj]);
 });
@@ -75,15 +75,15 @@ function sendChat(msg) {
 }
 
 function getMessages() {
-  const config = {
-    method: 'get',
-    url: 'http://localhost:3000/chat/',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  };
-  axios(config)
-    .then((res) => console.log(res.data))
-    .catch((err) => console.dir(err));
+  // const config = {
+  //   method: 'get',
+  //   url: 'http://localhost:3000/chat/',
+  //   headers: {
+  //     Authorization: `Bearer ${token}`,
+  //   },
+  // };
+  // axios(config)
+  //   .then((res) => console.log(res.data))
+  //   .catch((err) => console.dir(err));
+  socket.emit('chat message', 'Client 發送訊息');
 }

@@ -80,6 +80,10 @@ const userSchema = {
     type: String,
     select: false,
   },
+  discordId: {
+    type: String,
+    select: false,
+  },
   isValidator: {
     type: Boolean,
     default: false,

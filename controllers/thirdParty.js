@@ -23,6 +23,16 @@ const facebook_client_secret = process.env.FACEBOOK_CLIENT_SECRET;
 // const facebook_redirect_url = process.env.FACEBOOK_REDIRECT_URL;
 const facebook_redirect_url = 'http://localhost:3000/user/facebook/callback';
 
+const discord_client_id = process.env.DISCORD_CLIENT_ID;
+const discord_client_secret = process.env.DISCORD_CLIENT_SECRET;
+// const discord_redirect_url = process.env.DISCORD_REDIRECT_URL;
+const discord_state = 'mongodb-express-discord';
+const discord_redirect_url = 'http://localhost:3000/user/discord/callback';
+
+const tokenHeader = {
+  'Content-Type': 'application/x-www-form-urlencoded',
+};
+
 const thirdPartyController = {
   loginWithGoogle: handleErrorAsync(async (req, res, next) => {
     const query = {
@@ -156,9 +166,6 @@ const thirdPartyController = {
       state: line_state,
       grant_type: 'authorization_code',
     };
-    const tokenHeader = {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    };
     const url = 'https://api.line.me/oauth2/v2.1/token';
     const queryString = new URLSearchParams(options).toString();
     const response = await axios.post(url, queryString, {
@@ -200,6 +207,62 @@ const thirdPartyController = {
         name: getVerifyData.data.displayName,
         lineId: getData.data.userId,
         photo: getData.data.pictureUrl,
+        password: randomPassword(),
+      };
+      const userData = await User.create(data);
+      const token = generateToken(userData);
+      return successHandle(res, '已成功已登入', { token, userData });
+    }
+    const token = generateToken(user);
+    return successHandle(res, '已成功已登入', { token, user });
+  }),
+  loginWithDiscord: handleErrorAsync(async (req, res, next) => {
+    const query = {
+      client_id: discord_client_id,
+      redirect_uri: discord_redirect_url,
+      response_type: 'code',
+      state: discord_state,
+      scope: ['email', 'identify'].join(' '),
+    };
+    const auth_url = 'https://discord.com/api/oauth2/authorize';
+    const queryString = new URLSearchParams(query).toString();
+    res.redirect(`${auth_url}?${queryString}`);
+  }),
+  discordCallback: handleErrorAsync(async (req, res, next) => {
+    const code = req.query.code;
+    const options = new URLSearchParams({
+      code,
+      client_id: discord_client_id,
+      client_secret: discord_client_secret,
+      redirect_uri: discord_redirect_url,
+      grant_type: 'authorization_code',
+      scope: 'email identify',
+    });
+    const url = 'https://discord.com/api/oauth2/token';
+
+    const response = await axios.post(url, options);
+
+    const { access_token } = response.data;
+
+    const { data: getData } = await axios.get('https://discord.com/api/users/@me', {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+
+    const discordId = getData.id;
+    const discordEmail = getData.email;
+
+    const user = await User.findOne({
+      $or: [{ discordId: discordId }, { email: discordEmail }],
+    }).exec();
+
+    if (!user) {
+      const data = {
+        email: discordEmail || createEmail(),
+        name: getData.username,
+        discordId,
+        avatar: `https://cdn.discordapp.com/avatars/${discordId}/${getData.avatar}`,
         password: randomPassword(),
       };
       const userData = await User.create(data);

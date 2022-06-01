@@ -16,6 +16,8 @@ router.get('/user/google', thirdPartyController.loginWithGoogle);
 router.get('/user/google/callback', thirdPartyController.googleCallback);
 router.get('/user/line', thirdPartyController.loginWithLine);
 router.get('/user/line/callback', thirdPartyController.lineCallback);
+router.get('/user/discord', thirdPartyController.loginWithDiscord);
+router.get('/user/discord/callback', thirdPartyController.discordCallback);
 
 router.post('/:id/follow', isAuthor, userController.addFollower);
 router.delete('/:id/unfollow', isAuthor, userController.deleteFollower);

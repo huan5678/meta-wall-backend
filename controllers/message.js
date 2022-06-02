@@ -5,8 +5,19 @@ const appError = require('../utils/appError');
 
 const chatController = {
   getMessages: async (req, res, next) => {
-    messages = await Message.find();
+    const messages = await Message.find();
+    const room = req.body;
+    console.log(room);
+    res.io.of('/').emit('history', messages);
     return successHandle(res, '成功取得聊天室紀錄', messages);
+  },
+  enterChatRoom: async (req, res, next) => {
+    const userData = {
+      avatar: req.user.avatar,
+      name: req.user.name,
+      enterAt: new Date().getTime(),
+    };
+    res.io.emit('coming', userData);
   },
   storeMessage: async (req, res, next) => {
     const { content } = req.body;

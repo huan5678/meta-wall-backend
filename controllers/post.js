@@ -6,8 +6,11 @@ const appError = require('../utils/appError');
 
 const postController = {
   getAll: handleErrorAsync(async (req, res, next) => {
-    let { timeSort, q } = req.query;
-    timeSort = timeSort === 'asc' ? 'createdAt' : '-createdAt';
+    let { timeSort, q, type, page = 0 } = req.query;
+    const arr = ['likes.length', 'comments.length', 'image'];
+    if (!arr.includes(type)) {
+      return next(appError(400, '無此型態', next));
+    }
     query = q !== undefined ? { content: new RegExp(req.query.q) } : {};
     const post = await Post.find(query)
       .populate({
@@ -18,7 +21,8 @@ const postController = {
         path: 'comments',
         select: 'comment user createdAt',
       })
-      .sort(timeSort);
+      .skip(page * 20)
+      .sort(`${type}:${timeSort === 'asc' ? '1' : '-1'}`);
     successHandle(res, '成功撈取所有貼文', post);
   }),
   getOne: handleErrorAsync(async (req, res, next) => {

@@ -4,10 +4,17 @@ const input = document.getElementById('sendMessage');
 const messages = document.getElementById('messages');
 const setToken = document.getElementById('token');
 const connectBtn = document.getElementById('connect');
-const getHistoryBtn = document.getElementById('history');
 
 const client = socket.on('connect', async () => {
   return await socket.id;
+});
+
+socket.on('connect', async () => {
+  socket.on(socket.id, (obj) => {
+    if (obj.length > 0) {
+      createChatHistory(obj);
+    }
+  });
 });
 
 const token =
@@ -27,20 +34,9 @@ connectBtn.addEventListener('click', () => {
   enterChatRoom(userToken);
 });
 
-getHistoryBtn.addEventListener('click', () => {
-  const userToken = setToken.value || token;
-  getHistory(userToken);
-});
-
 socket.on('coming', (obj) => {
   console.log('coming', obj);
   userComing(obj);
-});
-
-socket.on('history', (obj) => {
-  if (obj.length > 0) {
-    createChatHistory(obj);
-  }
 });
 
 socket.on('chat message', (obj) => {
@@ -115,28 +111,11 @@ function sendChat(msg, token) {
 }
 
 function enterChatRoom(token) {
-  const config = {
-    method: 'get',
-    url: 'http://localhost:3000/chat/coming',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  };
-  axios(config)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => console.dir(err));
-}
-
-function getHistory(token) {
   const data = JSON.stringify({
     socketId: client.id,
   });
-  console.log(data);
   const config = {
-    method: 'get',
+    method: 'put',
     url: 'http://localhost:3000/chat',
     headers: {
       Authorization: `Bearer ${token}`,

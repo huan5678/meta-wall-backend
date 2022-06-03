@@ -4,20 +4,17 @@ const successHandle = require('../utils/successHandle');
 const appError = require('../utils/appError');
 
 const chatController = {
-  getMessages: async (req, res, next) => {
-    const messages = await Message.find();
-    const room = req.body;
-    console.log(room);
-    res.io.of('/').emit('history', messages);
-    return successHandle(res, '成功取得聊天室紀錄', messages);
-  },
   enterChatRoom: async (req, res, next) => {
     const userData = {
       avatar: req.user.avatar,
       name: req.user.name,
       enterAt: new Date().getTime(),
     };
+    const { socketId } = req.body;
+    const messages = await Message.find();
+    res.io.emit(socketId, messages);
     res.io.emit('coming', userData);
+    return successHandle(res, '使用者進入並回傳聊天室紀錄', messages);
   },
   storeMessage: async (req, res, next) => {
     const { content } = req.body;

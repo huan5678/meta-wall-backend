@@ -53,13 +53,15 @@ const postController = {
     return successHandle(res, '刪除一則貼文');
   }),
   postPatch: handleErrorAsync(async (req, res, next) => {
-    const { content = '', image = '', name = '' } = req.body;
+    const { content = '', image = '' } = req.body;
     const { id } = req.params;
     const editPost = await Post.findByIdAndUpdate({ id }, { content, image, name }, { new: true });
-    if (content && editPost) {
-      successHandle(res, '成功編輯一則貼文!!', editPost);
+    if (content === null || content === undefined) next(appError(400, '請檢查content 資料', next));
+    if (editPost === null || editPost === undefined) {
+      next(appError(400, '請檢查content 資料', next));
     }
-    return next(appError(400, '請檢查content 資料', next));
+
+    successHandle(res, '成功編輯一則貼文!!', editPost);
   }),
   addLike: handleErrorAsync(async (req, res, next) => {
     const _id = req.params.id;

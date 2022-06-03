@@ -259,17 +259,42 @@ module.exports = router;
  *                       example: true
  *                     followers:
  *                       type: array
- *                       items: string
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           user:
+ *                             type: string
+ *                             example: 62923ed21d6b70e4b3560200
+ *                           createdAt:
+ *                             type: string
+ *                             example: 2022-06-03T08:08:59.345Z
  *                       description: 追踪我的人的id
- *                       example: 628e4f69cc07c6ccd79f783b
  *                     following:
  *                       type: array
- *                       items: string
- *                       description: 我追踪的人的id
- *                       example: 628e4f69cc07c6ccd79f783b
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           user:
+ *                             type: object
+ *                             properties:
+ *                               avatar:
+ *                                 type: string
+ *                                 example: avatar.io
+ *                               _id:
+ *                                 type: string
+ *                                 example: 62923ed21d6b70e4b3560200
+ *                               name:
+ *                                 type: string
+ *                                 example: miquella
+ *                               photo:
+ *                                 type: string
+ *                                 example: photo.io
+ *                           createdAt:
+ *                             type: string
+ *                             example: 2022-05-30T11:16:42.359Z
  *                     gender:
  *                       type: string
- *                       enum: [male, female]
+ *                       enum: [male, female, x]
  *                       description: 性別
  *                       example: female
  */
@@ -305,7 +330,7 @@ module.exports = router;
  *                 example: malenia.io
  *               gender:
  *                 type: string
- *                 enum: [male,female]
+ *                 enum: [male,female, x]
  *                 example: female 
  *     security:
  *       - bearerAuth: []
@@ -335,7 +360,7 @@ module.exports = router;
  *                       example: malenia
  *                     gender:
  *                       type: string
- *                       enum: [male, female]
+ *                       enum: [male, female, x]
  *                       description: 姓別
  *                       example: female
  *                     photo:

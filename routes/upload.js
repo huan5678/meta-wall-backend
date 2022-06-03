@@ -47,7 +47,7 @@ module.exports = router;
  *   post:
  *     tags:
  *       - Upload
- *     summary: this is summary
+ *     summary: 圖片上傳
  *     requestBody:
  *       required: true
  *       content:

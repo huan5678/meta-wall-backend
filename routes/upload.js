@@ -32,3 +32,53 @@ router.post(
 );
 
 module.exports = router;
+
+
+
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ * /upload:
+ *   post:
+ *     tags:
+ *       - Upload
+ *     summary: this is summary
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               files:
+ *                 type: array
+ *                 description: array of files of picture 
+ *     security:
+ *       - bearerAuth: []
+ *     description: this is description
+ *     responses:
+ *       200:
+ *         description: data.link of Imgur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: Boolean
+ *                   description: status
+ *                   example: true
+ *                 message:
+ *                   type: String
+ *                   description: message
+ *                   example: 上傳圖片成功
+ *                 data:
+ *                   type: String
+ *                   description: Imgur data.link
+ *                   example: xxxx
+ */

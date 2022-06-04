@@ -19,9 +19,9 @@ const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerDefinition = {
   openapi: '3.0.0',
   info: {
-    title: 'Express API for JSONPlaceholder',
+    title: 'Express API for MetaWall',
     version: '1.0.0',
-    description: 'meta wall node.js project',
+    description: '第 9 組 meta wall node.js project',
 
   },
   servers: [

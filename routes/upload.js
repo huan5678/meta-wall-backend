@@ -51,13 +51,14 @@ module.exports = router;
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
- *               files:
- *                 type: array
- *                 description: array of files of picture 
+ *               fileName:
+ *                 type: string
+ *                 format: binary
+ *                 description: file name of picture 
  *     security:
  *       - bearerAuth: []
  *     description: this is description
@@ -76,9 +77,5 @@ module.exports = router;
  *                 message:
  *                   type: String
  *                   description: message
- *                   example: 上傳圖片成功
- *                 data:
- *                   type: String
- *                   description: Imgur data.link
- *                   example: xxxx
+ *                   example: https://i.imgur.com/pgipppc.png
  */

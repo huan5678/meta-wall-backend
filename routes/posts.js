@@ -34,6 +34,15 @@ module.exports = router;
  *     security:
  *       - bearerAuth: []
  *     description: 取得所有貼文
+ *     parameters:
+ *       - in: query
+ *         name: timeSort
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: q
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: 取得所有貼文
@@ -430,59 +439,7 @@ module.exports = router;
  * /posts/{id}/comment:
  *   post:
  *     tags:
- *       - Post 留言
- *     summary: 貼文留言
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: 要留言的貼文id
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               comment:
- *                 type: string
- *                 example: I comment Malenia
- *     security:
- *       - bearerAuth: []
- *     description: 貼文留言
- *     responses:
- *       200:
- *         description: 留言一則貼文
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: Boolean
- *                   description: status
- *                   example: true
- *                 message:
- *                   type: String
- *                   description: message
- *                   example: 成功新增一則留言
- */
-
-
-/**
- * @swagger
- * components:
- *   securitySchemes:
- *     bearerAuth:
- *       type: http
- *       scheme: bearer
- *       bearerFormat: JWT
- * /posts/{id}/comment:
- *   post:
- *     tags:
- *       - Post 留言
+ *       - Post 貼文
  *     summary: 貼文留言
  *     parameters:
  *       - in: path

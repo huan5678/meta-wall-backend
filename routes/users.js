@@ -492,3 +492,64 @@ module.exports = router;
  *                     type: string
  *                     example: ['62923ed21d6b70e4b3560200',]
  */
+
+
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ * /getFollowList:
+ *   get:
+ *     tags:
+ *       - User 使用者
+ *     summary: 取得按讚名單
+ *     security:
+ *       - bearerAuth: []
+ *     description: 取得追踪名單
+ *     responses:
+ *       200:
+ *         description: 成功取得追踪名單
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: Boolean
+ *                   description: status
+ *                   example: true
+ *                 message:
+ *                   type: String
+ *                   description: message
+ *                   example: 成功取得按讚表單
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       following:
+ *                         type: object
+ *                         properties:
+ *                           user:
+ *                             type: object
+ *                             properties:
+ *                               avatar:
+ *                                 type: string
+ *                                 example: avatar.io
+ *                               _id:
+ *                                 type: string
+ *                                 example: 62923ed21d6b70e4b3560200
+ *                               name:
+ *                                 type: string
+ *                                 example: miquella
+ *                               photo:
+ *                                 type: string
+ *                                 example: imgur.io
+ *                           createdAt:
+ *                             type: string
+ *                             example: 2022-05-30T11:16:42.359Z
+ */

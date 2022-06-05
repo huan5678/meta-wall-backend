@@ -2,20 +2,17 @@ const express = require('express');
 const router = express.Router();
 const successHandle = require('../utils/successHandle');
 const donateController = require('../controllers/donate');
+const { decrypt } = require('../utils/newebpay');
 const { isAuthor } = require('../middleware/handleJWT');
 
-router.get('/', isAuthor, donateController.orderCreate);
-router.post('/notify', (res, req, next) => {
-  console.log('notify');
-  console.log(res);
-  console.log(req);
-  successHandle(res, 'notify', { res, req });
+router.post('/', isAuthor, donateController.orderCreate);
+router.post('/notify', (req, res, next) => {
+  // console.log(decrypt(req.body.TradeInfo));
+  successHandle(res, 'notify');
 });
-router.post('/callback', (res, req, next) => {
-  console.log('callback');
-  console.log(res);
-  console.log(req);
-  successHandle(res, 'callback', { res, req });
+router.post('/callback', (req, res, next) => {
+  const result = JSON.parse(decrypt(req.body.TradeInfo));
+  successHandle(res, 'callback', result);
 });
 
 module.exports = router;

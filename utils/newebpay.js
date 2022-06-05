@@ -2,9 +2,8 @@ const crypto = require('crypto');
 const newebpay_merchant_id = process.env.NEWEBPAY_MERCHANT_ID;
 const newebpay_hash_key = process.env.NEWEBPAY_HASH_KEY;
 const newebpay_hash_iv = process.env.NEWEBPAY_HASH_IV;
-const newebpay_return_url = 'https://meta-wall-backend.herokuapp.com/donate/callback';
+const newebpay_return_url = 'https://698e-2401-e180-8845-5de4-479-b65c-7b28-be55.ngrok.io/shop';
 const newebpay_notify_url = 'https://meta-wall-backend.herokuapp.com/donate/notify';
-const newebpay_MPG_url = 'https://ccore.newebpay.com/MPG/mpg_gateway';
 
 const paramsToString = (params) => {
   return Object.keys(params)
@@ -18,11 +17,13 @@ const encrypt = (data) => {
   return enc + encrypt.final('hex');
 };
 
-const decrypt = (tradeInfo) => {
+const decrypt = (TradeInfo) => {
   let decrypt = crypto.createDecipheriv('aes256', newebpay_hash_key, newebpay_hash_iv);
   decrypt.setAutoPadding(false);
-  let result = decrypt.update(tradeInfo, 'hex', 'utf8');
-  return (result += decrypt.final('utf8'));
+  let text = decrypt.update(TradeInfo, 'hex', 'utf8');
+  let plainText = text + decrypt.final('utf8');
+  let result = plainText.replace(/[\x00-\x20]+/g, '');
+  return result;
 };
 
 const shaHash = (encrypt) => {
@@ -37,13 +38,16 @@ const setTradeInfo = (amt, desc, email) => {
   const params = {
     MerchantID: newebpay_merchant_id,
     RespondType: 'JSON',
-    TimeStamp: Date.now,
+    TimeStamp: Date.now(),
     Version: '2.0',
-    MerchantOrderNo: Date.now,
+    MerchantOrderNo: Date.now(),
     ItemDesc: desc,
     Amt: amt,
     Email: email,
     LoginType: 0,
+    ReturnURL: newebpay_return_url,
+    NotifyURL: newebpay_notify_url,
+    ClientBackURL: 'https://698e-2401-e180-8845-5de4-479-b65c-7b28-be55.ngrok.io/shop',
   };
 
   const tradeInfo = encrypt(params);
@@ -57,4 +61,4 @@ const setTradeInfo = (amt, desc, email) => {
   };
 };
 
-module.exports = setTradeInfo;
+module.exports = { setTradeInfo, decrypt };

@@ -2,8 +2,8 @@ const crypto = require('crypto');
 const newebpay_merchant_id = process.env.NEWEBPAY_MERCHANT_ID;
 const newebpay_hash_key = process.env.NEWEBPAY_HASH_KEY;
 const newebpay_hash_iv = process.env.NEWEBPAY_HASH_IV;
-const newebpay_return_url = 'https://698e-2401-e180-8845-5de4-479-b65c-7b28-be55.ngrok.io/shop';
-const newebpay_notify_url = 'https://meta-wall-backend.herokuapp.com/donate/notify';
+const newebpay_return_url = `${process.env.NEWEBPAY_DOMAIN}/donate/callback`;
+const newebpay_notify_url = `${process.env.NEWEBPAY_DOMAIN}/donate/notify`;
 
 const paramsToString = (params) => {
   return Object.keys(params)
@@ -34,7 +34,7 @@ const shaHash = (encrypt) => {
     .toUpperCase();
 };
 
-const setTradeInfo = (amt, desc, email) => {
+const setTradeInfo = (amt, desc, email, id) => {
   const params = {
     MerchantID: newebpay_merchant_id,
     RespondType: 'JSON',
@@ -45,19 +45,23 @@ const setTradeInfo = (amt, desc, email) => {
     Amt: amt,
     Email: email,
     LoginType: 0,
-    ReturnURL: newebpay_return_url,
-    NotifyURL: newebpay_notify_url,
-    ClientBackURL: 'https://698e-2401-e180-8845-5de4-479-b65c-7b28-be55.ngrok.io/shop',
+    ReturnURL: `${newebpay_return_url}?id=${id}`,
+    NotifyURL: `${newebpay_notify_url}?id=${id}`,
   };
 
   const tradeInfo = encrypt(params);
   const tradeInfoSha = shaHash(tradeInfo);
 
   return {
-    MerchantID: newebpay_merchant_id,
-    TradeInfo: tradeInfo,
-    TradeSha: tradeInfoSha,
-    Version: '2.0',
+    newsbpay: {
+      MerchantID: newebpay_merchant_id,
+      TradeInfo: tradeInfo,
+      TradeSha: tradeInfoSha,
+      Version: '2.0',
+    },
+    mongoose: {
+      merchantOrderNo: params.MerchantOrderNo,
+    },
   };
 };
 

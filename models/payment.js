@@ -8,8 +8,7 @@ const paymentSchema = {
   },
   tradeNo: {
     type: String,
-    required: [true, '交易編號為必填資訊'],
-    unique: true,
+    default: '',
   },
   merchantOrderNo: {
     type: String,
@@ -22,16 +21,21 @@ const paymentSchema = {
   },
   paymentType: {
     type: String,
-    enum: ['CREDIT', 'VACC', 'WEBATM', 'BARCODE', 'CVS'],
-    required: [true, '交易方式為必要資訊'],
+    enum: ['CREDIT', 'VACC', 'WEBATM', 'BARCODE', 'CVS', ''],
+    default: '',
   },
   payTime: {
-    type: Date,
-    required: [true, '支付完成時間為必要資訊'],
+    type: Number,
+    default: 0,
   },
   IP: {
     type: String,
-    required: [true, 'IP 為必要資訊'],
+    default: '',
+  },
+  payment_status: {
+    // 這邊定義帳單狀態 0: 尚未繳費 1: 已繳費 2: 過期
+    type: Number,
+    default: 0,
   },
 };
 

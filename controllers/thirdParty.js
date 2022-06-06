@@ -1,11 +1,7 @@
 const User = require('../models/user');
-const handleErrorAsync = require('../middleware/handleErrorAsync');
-const successHandle = require('../utils/successHandle');
-const { generateToken } = require('../middleware/handleJWT');
-const { randomPassword } = require('../utils/passwordRule');
 const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
-const createEmail = require('../utils/createEmail');
+const createUser = require('../utils/createUser');
 
 // const google_redirect_url = process.env.GOOGLE_REDIRECT_URL;
 const google_redirect_url = 'http://localhost:3000/user/google/callback';
@@ -34,7 +30,7 @@ const tokenHeader = {
 };
 
 const thirdPartyController = {
-  loginWithGoogle: handleErrorAsync(async (req, res, next) => {
+  loginWithGoogle: async (req, res, next) => {
     const query = {
       redirect_uri: google_redirect_url,
       client_id: google_client_id,
@@ -49,8 +45,8 @@ const thirdPartyController = {
     const auth_url = 'https://accounts.google.com/o/oauth2/auth';
     const queryString = new URLSearchParams(query).toString();
     res.redirect(`${auth_url}?${queryString}`);
-  }),
-  googleCallback: handleErrorAsync(async (req, res, next) => {
+  },
+  googleCallback: async (req, res, next) => {
     const code = req.query.code;
     const options = {
       code,
@@ -65,7 +61,7 @@ const thirdPartyController = {
 
     const { id_token, access_token } = response.data;
 
-    const getData = await axios.get(
+    const { data: getData } = await axios.get(
       `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
       {
         headers: {
@@ -73,27 +69,14 @@ const thirdPartyController = {
         },
       },
     );
-    const googleEmail = getData.data.email;
-    const googleId = getData.data.id;
+    const googleEmail = getData.email;
+    const googleId = getData.id;
     const user = await User.findOne({
       $or: [{ googleId: googleId }, { email: googleEmail }],
     }).exec();
-    if (!user) {
-      const data = {
-        name: getData.data.name,
-        password: randomPassword(),
-        googleId: getData.data.id,
-        email: getData.data.email,
-        avatar: getData.data.picture,
-      };
-      const userData = await User.create(data);
-      const token = generateToken(userData);
-      return successHandle(res, '已成功已登入', { token, userData });
-    }
-    const token = generateToken(user);
-    return successHandle(res, '已成功已登入', { token, user });
-  }),
-  loginWithFacebook: handleErrorAsync(async (req, res, next) => {
+    createUser(res, user, getData, 'googleId');
+  },
+  loginWithFacebook: async (req, res, next) => {
     const query = {
       redirect_uri: facebook_redirect_url,
       client_id: facebook_client_id,
@@ -102,8 +85,8 @@ const thirdPartyController = {
     const auth_url = 'https://www.facebook.com/v2.10/dialog/oauth';
     const queryString = new URLSearchParams(query).toString();
     res.redirect(`${auth_url}?${queryString}`);
-  }),
-  facebookCallback: handleErrorAsync(async (req, res, next) => {
+  },
+  facebookCallback: async (req, res, next) => {
     const code = req.query.code;
     const options = {
       code,
@@ -122,28 +105,15 @@ const thirdPartyController = {
       access_token,
     };
     const params = new URLSearchParams(query).toString();
-    const getData = await axios.get(`https://graph.facebook.com/me?${params}`);
-    const facebookId = getData.data.id;
-    const facebookEmail = getData.data.email;
+    const { data: getData } = await axios.get(`https://graph.facebook.com/me?${params}`);
+    const facebookId = getData.id;
+    const facebookEmail = getData.email;
     const user = await User.findOne({
       $or: [{ facebookId: facebookId }, { email: facebookEmail }],
     }).exec();
-    if (!user) {
-      const data = {
-        name: getData.data.name,
-        password: randomPassword(),
-        facebookId: getData.data.id,
-        email: getData.data.email || createEmail(),
-        avatar: getData.data.picture.url,
-      };
-      const userData = await User.create(data);
-      const token = generateToken(userData);
-      return successHandle(res, '已成功已登入', { token, userData });
-    }
-    const token = generateToken(user);
-    return successHandle(res, '已成功已登入', { token, user });
-  }),
-  loginWithLine: handleErrorAsync(async (req, res, next) => {
+    createUser(res, user, getData, 'facebookId');
+  },
+  loginWithLine: async (req, res, next) => {
     const query = {
       response_type: 'code',
       client_id: line_channel_id,
@@ -155,8 +125,8 @@ const thirdPartyController = {
     const auth_url = 'https://access.line.me/oauth2/v2.1/authorize';
     const queryString = new URLSearchParams(query).toString();
     res.redirect(`${auth_url}?${queryString}`);
-  }),
-  lineCallback: handleErrorAsync(async (req, res, next) => {
+  },
+  lineCallback: async (req, res, next) => {
     const code = req.query.code;
     const options = {
       code,
@@ -174,7 +144,7 @@ const thirdPartyController = {
 
     const { access_token, id_token } = response.data;
 
-    const getData = await axios.get('https://api.line.me/v2/profile', {
+    const { data: getData } = await axios.get('https://api.line.me/v2/profile', {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
@@ -187,36 +157,23 @@ const thirdPartyController = {
 
     const verifyBodyString = new URLSearchParams(verifyBody).toString();
 
-    const getVerifyData = await axios.post(
+    const { data: getVerifyData } = await axios.post(
       'https://api.line.me/oauth2/v2.1/verify',
       verifyBodyString,
       {
         headers: tokenHeader,
       },
     );
-    const lineId = getData.data.userId;
-    const lineEmail = getVerifyData.data.email;
+    const lineId = getData.userId;
+    const lineEmail = getVerifyData.email;
+    getData.email = getVerifyData.email;
 
     const user = await User.findOne({
       $or: [{ lineId: lineId }, { email: lineEmail }],
     }).exec();
-
-    if (!user) {
-      const data = {
-        email: lineEmail || createEmail(),
-        name: getVerifyData.data.displayName,
-        lineId: getData.data.userId,
-        avatar: getData.data.pictureUrl,
-        password: randomPassword(),
-      };
-      const userData = await User.create(data);
-      const token = generateToken(userData);
-      return successHandle(res, '已成功已登入', { token, userData });
-    }
-    const token = generateToken(user);
-    return successHandle(res, '已成功已登入', { token, user });
-  }),
-  loginWithDiscord: handleErrorAsync(async (req, res, next) => {
+    createUser(res, user, getData, 'lineId');
+  },
+  loginWithDiscord: async (req, res, next) => {
     const query = {
       client_id: discord_client_id,
       redirect_uri: discord_redirect_url,
@@ -227,8 +184,8 @@ const thirdPartyController = {
     const auth_url = 'https://discord.com/api/oauth2/authorize';
     const queryString = new URLSearchParams(query).toString();
     res.redirect(`${auth_url}?${queryString}`);
-  }),
-  discordCallback: handleErrorAsync(async (req, res, next) => {
+  },
+  discordCallback: async (req, res, next) => {
     const code = req.query.code;
     const options = new URLSearchParams({
       code,
@@ -252,26 +209,13 @@ const thirdPartyController = {
 
     const discordId = getData.id;
     const discordEmail = getData.email;
+    getData.photo = `https://cdn.discordapp.com/avatars/${discordId}/${getData.avatar}`;
 
     const user = await User.findOne({
       $or: [{ discordId: discordId }, { email: discordEmail }],
     }).exec();
-
-    if (!user) {
-      const data = {
-        email: discordEmail || createEmail(),
-        name: getData.username,
-        discordId,
-        avatar: `https://cdn.discordapp.com/avatars/${discordId}/${getData.avatar}`,
-        password: randomPassword(),
-      };
-      const userData = await User.create(data);
-      const token = generateToken(userData);
-      return successHandle(res, '已成功已登入', { token, userData });
-    }
-    const token = generateToken(user);
-    return successHandle(res, '已成功已登入', { token, user });
-  }),
+    createUser(res, user, getData, 'discordId');
+  },
 };
 
 module.exports = thirdPartyController;

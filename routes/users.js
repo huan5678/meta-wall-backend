@@ -22,5 +22,6 @@ router.get('/user/discord/callback', thirdPartyController.discordCallback);
 router.post('/:id/follow', isAuthor, userController.addFollower);
 router.delete('/:id/unfollow', isAuthor, userController.deleteFollower);
 router.get('/user/getLikesList', isAuthor, userController.getLikesList);
+router.get('/getFollowList', isAuthor, userController.getFollowList);
 
 module.exports = router;

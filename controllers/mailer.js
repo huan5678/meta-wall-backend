@@ -32,34 +32,31 @@ const mailerController = {
         },
       },
       {
-        form: '"Meta Wall Support Ⓜ️" <foo@example.com>',
         headers: {
           'X-Laziness-level': 1000,
         },
       },
     );
     let message = {
-      // Comma separated list of recipients
+      form: `"Meta Wall Support Ⓜ️" <${process.env.GMAIL_ACCOUNT}>`,
       to: 'Nodemailer <huan5678@gmail.com>',
-
-      // Subject of the message
       subject: 'META WALL 忘記密碼驗證通知信',
-
-      // AMP4EMAIL
+      // text: 'For clients with plaintext support only',
+      // html: '<p>For clients that do not support AMP4EMAIL or amp content is not valid</p>',
       amp: `<!doctype html>
-        <html ⚡4email>
-          <head>
-            <meta charset="utf-8">
-            <style amp4email-boilerplate>body{visibility:hidden}</style>
-            <script async src="https://cdn.ampproject.org/v0.js"></script>
-            <script async custom-element="amp-anim" src="https://cdn.ampproject.org/v0/amp-anim-0.1.js"></script>
-          </head>
-          <body>
-            <p><b>Hello</b> to myself <amp-img src="https://cldup.com/P0b1bUmEet.png" width="16" height="16"/></p>
-            <p>No embedded image attachments in AMP, so here's a linked nyan cat instead:<br/>
-              <amp-anim src="https://cldup.com/D72zpdwI-i.gif" width="500" height="350" layout="responsive" /></p>
-          </body>
-        </html>`,
+      <html ⚡4email>
+        <head>
+          <meta charset="utf-8">
+          <style amp4email-boilerplate>body{visibility:hidden}</style>
+          <script async src="https://cdn.ampproject.org/v0.js"></script>
+          <script async custom-element="amp-anim" src="https://cdn.ampproject.org/v0/amp-anim-0.1.js"></script>
+        </head>
+        <body>
+          <p>Image: <amp-img src="https://cldup.com/P0b1bUmEet.png" width="16" height="16"/></p>
+          <p>GIF (requires "amp-anim" script in header):<br/>
+            <amp-anim src="https://cldup.com/D72zpdwI-i.gif" width="500" height="350"/></p>
+        </body>
+      </html>`,
     };
 
     transporter.sendMail(message, (error, info) => {
@@ -72,8 +69,7 @@ const mailerController = {
       console.log('Message sent successfully!');
       console.log(nodemailer.getTestMessageUrl(info));
 
-      // only needed when using pooled connections
-      transporter.close();
+      return success(res, '成功送出重置信');
     });
   },
 };

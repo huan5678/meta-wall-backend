@@ -8,6 +8,7 @@ router.get('/', function (req, res, next) {
     <a href="http://localhost:3000/user/google"><button type="button">google login</button></a>
     <a href="http://localhost:3000/user/facebook"><button type="button">FB login</button></a>
     <a href="http://localhost:3000/user/line"><button type="button">Line login</button></a>
+    <a href="http://localhost:3000/user/discord"><button type="button">Discord login</button></a>
     `,
   );
 });

@@ -210,6 +210,7 @@ const thirdPartyController = {
     const discordId = getData.id;
     const discordEmail = getData.email;
     getData.photo = `https://cdn.discordapp.com/avatars/${discordId}/${getData.avatar}`;
+    getData.name = getData.username;
 
     const user = await User.findOne({
       $or: [{ discordId: discordId }, { email: discordEmail }],

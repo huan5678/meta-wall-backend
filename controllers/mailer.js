@@ -1,7 +1,22 @@
 const nodemailer = require('nodemailer');
+const User = require('../models/user');
+const validator = require('validator');
+const successHandle = require('../utils/successHandle');
+const appError = require('../utils/appError');
 
 const mailerController = {
   sendResetEmail: async (req, res, next) => {
+    const { email } = req.body;
+    if (!email) {
+      return appError(400, '請填入 email 欄位', next);
+    }
+    if (!validator.isEmail(email)) {
+      return appError(400, '請正確輸入 email 格式', next);
+    }
+    const user = await User.findOne({ email }).exec();
+    if (!user) {
+      return appError(400, '無此帳號，請再次確認註冊 Email 帳號，或是重新註冊新帳號', next);
+    }
     const transporter = nodemailer.createTransport(
       {
         host: 'smtp.gmail.com',
@@ -28,14 +43,7 @@ const mailerController = {
       to: 'Nodemailer <huan5678@gmail.com>',
 
       // Subject of the message
-      subject: 'Nodemailer is unicode friendly ✔' + Date.now(),
-
-      // plaintext body
-      text: 'Hello to myself!',
-
-      // HTML body
-      html: `<p><b>Hello</b> to myself <img src="cid:note@example.com"/></p>
-        <p>Here's a nyan cat for you as an embedded attachment:<br/><img src="cid:nyan@example.com"/></p>`,
+      subject: 'META WALL 忘記密碼驗證通知信',
 
       // AMP4EMAIL
       amp: `<!doctype html>
@@ -49,52 +57,9 @@ const mailerController = {
           <body>
             <p><b>Hello</b> to myself <amp-img src="https://cldup.com/P0b1bUmEet.png" width="16" height="16"/></p>
             <p>No embedded image attachments in AMP, so here's a linked nyan cat instead:<br/>
-              <amp-anim src="https://cldup.com/D72zpdwI-i.gif" width="500" height="350"/></p>
+              <amp-anim src="https://cldup.com/D72zpdwI-i.gif" width="500" height="350" layout="responsive" /></p>
           </body>
         </html>`,
-
-      // An array of attachments
-      attachments: [
-        // String attachment
-        {
-          filename: 'notes.txt',
-          content: 'Some notes about this e-mail',
-          contentType: 'text/plain', // optional, would be detected from the filename
-        },
-
-        // Binary Buffer attachment
-        {
-          filename: 'image.png',
-          content: Buffer.from(
-            'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAABlBMVEUAAAD/' +
-              '//+l2Z/dAAAAM0lEQVR4nGP4/5/h/1+G/58ZDrAz3D/McH8yw83NDDeNGe4U' +
-              'g9C9zwz3gVLMDA/A6P9/AFGGFyjOXZtQAAAAAElFTkSuQmCC',
-            'base64',
-          ),
-
-          cid: 'note@example.com', // should be as unique as possible
-        },
-      ],
-
-      list: {
-        // List-Help: <mailto:admin@example.com?subject=help>
-        help: 'admin@example.com?subject=help',
-
-        // List-Unsubscribe: <http://example.com> (Comment)
-        unsubscribe: [
-          {
-            url: 'http://example.com/unsubscribe',
-            comment: 'A short note about this url',
-          },
-          'unsubscribe@example.com',
-        ],
-
-        // List-ID: "comment" <example.com>
-        id: {
-          url: 'mylist.example.com',
-          comment: 'This is my awesome list',
-        },
-      },
     };
 
     transporter.sendMail(message, (error, info) => {

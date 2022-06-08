@@ -18,7 +18,9 @@ const { traceDeprecation } = require('process');
 const app = express();
 
 require('./connections');
-app.set('view engine', 'html');
+// app.set('view engine', 'html');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());

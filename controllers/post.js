@@ -5,7 +5,7 @@ const appError = require('../utils/appError');
 
 const postController = {
   getAll: async (req, res, next) => {
-    let { timeSort, q, type = '', page = 0 } = req.query;
+    let { timeSort = 'asc', q, type = '', page = 0 } = req.query;
     const arr = ['likes', 'comments'];
     if (!arr.includes(type) && type) {
       return next(appError(400, '無此排序條件', next));
@@ -20,7 +20,8 @@ const postController = {
         path: 'comments',
         select: 'comment user createdAt',
       })
-      .skip(page * 20);
+      .skip(page * 20)
+      .sort({ createdAt: `${timeSort === 'asc' ? -1 : 1}` });
     if (type) {
       post.sort((a, b) => {
         if (timeSort === 'asc') {

@@ -21,14 +21,15 @@ const postController = {
         select: 'comment user createdAt',
       })
       .skip(page * 20);
-
-    post.sort((a, b) => {
-      if (timeSort === 'asc') {
-        return a[type].length - b[type].length;
-      } else {
-        return b[type].length - a[type].length;
-      }
-    });
+    if (type) {
+      post.sort((a, b) => {
+        if (timeSort === 'asc') {
+          return a[type].length - b[type].length;
+        } else {
+          return b[type].length - a[type].length;
+        }
+      });
+    }
     successHandle(res, '成功撈取所有貼文', post);
   },
   getOne: async (req, res, next) => {

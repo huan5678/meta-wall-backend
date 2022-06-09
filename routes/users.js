@@ -84,6 +84,24 @@ module.exports = router;
  *                   type: String
  *                   description: message
  *                   example: 成功建立使用者帳號
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     token:
+ *                       type: string
+ *                       example: xyzyayayayay
+ *                     user:
+ *                       type: object
+ *                       properties:
+ *                         id:
+ *                           type: string
+ *                           example: xxxxxxxxxx
+ *                         name:
+ *                           type: string
+ *                           example: Nate
+ *                         avatar:
+ *                           type: string
+ *                           example: elderring.io
  */
 
 /**
@@ -135,9 +153,23 @@ module.exports = router;
  *                   description: message
  *                   example: 登入成功
  *                 data:
- *                   type: string
- *                   description: token
- *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *                   type: object
+ *                   properties:
+ *                     token:
+ *                       type: string
+ *                       example: xxxxxxxxxx
+ *                     user:
+ *                       type: object
+ *                       properties:
+ *                         id:
+ *                           type: string
+ *                           example: xxxxxxxxxxxxx
+ *                         name:
+ *                           type: string
+ *                           example: malenia
+ *                         avatar:
+ *                           type: string
+ *                           example: eldenring.io
  *                     
  */
 
@@ -246,9 +278,9 @@ module.exports = router;
  *                       type: string
  *                       description: name
  *                       example: Malenia
- *                     photo:
+ *                     avatar:
  *                       type: string
- *                       description: link to photo
+ *                       description: link to figure
  *                       example: xxxxxxxxxxxxxxx
  *                     isValidator:
  *                       type: Boolean
@@ -285,7 +317,7 @@ module.exports = router;
  *                                 example: miquella
  *                               photo:
  *                                 type: string
- *                                 example: photo.io
+ *                                 example: eldenring.io
  *                           createdAt:
  *                             type: string
  *                             example: 2022-05-30T11:16:42.359Z
@@ -321,7 +353,7 @@ module.exports = router;
  *                 type: string
  *                 description: user name
  *                 example: malenia
- *               photo:
+ *               avatar:
  *                 type: string
  *                 description: 使用者照片的網址
  *                 example: malenia.io
@@ -360,10 +392,10 @@ module.exports = router;
  *                       enum: [male, female, x]
  *                       description: 姓別
  *                       example: female
- *                     photo:
+ *                     avatar:
  *                       type: string
  *                       description: 使用者相片網址
- *                       example: https://eldenring.io/malenia
+ *                       example: eldenring.io/malenia
  */
 
 

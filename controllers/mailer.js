@@ -1,8 +1,10 @@
 const nodemailer = require('nodemailer');
-const fs = require('fs');
 const path = require('path');
 const ejs = require('ejs');
 const validator = require('validator');
+const jwt = require('jsonwebtoken');
+
+const jwtSecret = process.env.JWT_SECRET;
 
 const User = require('../models/user');
 const successHandle = require('../utils/successHandle');
@@ -35,26 +37,37 @@ const mailerController = {
       },
     });
 
+    const payload = {
+      id: user._id,
+      email: user.email,
+      name: user.name,
+    };
+
+    const token = jwt.sign(payload, jwtSecret, { expiresIn: '1d' });
+
+    await User.findByIdAndUpdate(user._id, { resetToken: token });
+
     ejs.renderFile(
       path.resolve('./views/resetPassword.ejs'),
-      { userName: user.name, resetUrl: `https://localhost:3000/user/${user._id}/reset_password` },
+      {
+        userName: user.name,
+        resetUrl: `https://localhost:3000/?token=${token}`,
+      },
       function (err, data) {
         if (err) {
           console.log(err);
         } else {
           const mainOptions = {
             from: `"Meta Wall Support Ⓜ️" <${process.env.GMAIL_ACCOUNT}>`,
-            to: `${user.name} <huan5678@gmail.com>`,
+            to: `${user.name} <${email}>`,
             subject: 'META WALL 忘記密碼驗證通知信',
             html: data,
           };
-          console.log('html data ======================>', mainOptions.html);
-          transporter.sendMail(mainOptions, function (err, info) {
+          transporter.sendMail(mainOptions, function (err) {
             if (err) {
-              console.log(err);
+              return appError(400, err, next);
             } else {
-              console.log('Message sent: ' + info.response);
-              return success(res, '成功送出重置信');
+              return successHandle(res, '成功送出重置信');
             }
           });
         }

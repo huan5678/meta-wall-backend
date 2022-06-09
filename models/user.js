@@ -88,6 +88,10 @@ const userSchema = {
     type: Boolean,
     default: false,
   },
+  resetToken: {
+    type: String,
+    select: false,
+  },
 };
 
 const User_Schema = new mongoose.Schema(userSchema, {

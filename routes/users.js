@@ -12,6 +12,7 @@ router.get('/profile', isAuthor, handleErrorAsync(userController.getProfile));
 router.patch('/profile', isAuthor, handleErrorAsync(userController.updateProfile));
 router.post('/update_password', isAuthor, handleErrorAsync(userController.updatePassword));
 router.post('/forget_password', handleErrorAsync(mailerController.sendResetEmail));
+router.patch('/:id/reset_password', handleErrorAsync(userController.resetPassword));
 
 router.get('/facebook', handleErrorAsync(thirdPartyController.loginWithFacebook));
 router.get('/facebook/callback', handleErrorAsync(thirdPartyController.facebookCallback));

@@ -6,6 +6,7 @@ const postSchema = new mongoose.Schema(
     content: {
       type: String,
       required: [true, 'Content 未填寫'],
+      trim: true,
     },
     image: {
       type: String,

@@ -114,7 +114,13 @@ const postController = {
       user,
       comment,
     });
-    successHandle(res, '成功新增一則留言');
+
+    await Comment.populate(newComment, {
+      path: 'user',
+      select: '_id -following -isValidator -followers',
+    });
+
+    successHandle(res, '成功新增一則留言', newComment);
   },
   getUserPosts: async (req, res, next) => {
     const userId = req.params.id;

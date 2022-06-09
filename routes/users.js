@@ -23,6 +23,6 @@ router.get('/user/discord/callback', handleErrorAsync(thirdPartyController.disco
 router.post('/:id/follow', isAuthor, handleErrorAsync(userController.addFollower));
 router.delete('/:id/unfollow', isAuthor, handleErrorAsync(userController.deleteFollower));
 router.get('/user/getLikesList', isAuthor, handleErrorAsync(userController.getLikesList));
-router.get('/getFollowList', isAuthor, handleErrorAsync(userController.getFollowList));
+router.get('/user/getFollowList', isAuthor, handleErrorAsync(userController.getFollowList));
 
 module.exports = router;

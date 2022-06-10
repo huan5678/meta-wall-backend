@@ -75,6 +75,15 @@ const userController = {
     const user = await User.findById(userId);
     return successHandle(res, '成功取得使用者資訊', user);
   },
+  getSpecUserProfile: async (req, res, next) => {
+    const userID = req.params.id;
+    const user = await User.findById(userID).select('-isValidator -following -gender');
+    const post = await Post.find({ userId: userID }).populate({
+      path: 'comments',
+      select: 'comment user',
+    });
+    return successHandle(res, '成功取得指定使用者資訊', { user, post });
+  },
   updatePassword: async (req, res, next) => {
     let { password, confirmPassword } = req.body;
     if (!password || !confirmPassword) {

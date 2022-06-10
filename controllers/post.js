@@ -124,10 +124,16 @@ const postController = {
   },
   getUserPosts: async (req, res, next) => {
     const userId = req.params.id;
+    if (!userId) {
+      next(appError(400, '尚未帶入 User ID', next));
+    }
     const getPosts = await Post.find({ userId }).populate({
       path: 'comments',
       select: 'comment user',
     });
+    if (!getPosts) {
+      next(appError(400, '查無此 User', next));
+    }
     successHandle(res, '成功取得單一會員所有貼文', getPosts);
   },
 };

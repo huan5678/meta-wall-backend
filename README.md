@@ -60,12 +60,20 @@ npm run swagger
 The environment variables sample can be found in the  `config.env`. They come with these default values:
 
 ```bash
+# backend domain
+BACKEND_DOMAIN=
+# frontend domain
+FRONTEND_DOMAIN=
+#discord log in
+DISCORD_CLIENT_ID=
+DISCORD_CLIENT_SECRET=
 # mongodb
 DATABASE_PATH=
 DATABASE_PASSWORD=
 # upload images to imgur
-IMGUR_ACCESS_TOKEN=
-IMGUR_ACCESS_ALBUM=
+IMGUR_CLIENT_SECRET=
+IMGUR_CLIENTID=
+IMGUR_REFRESH_TOKEN=
 # jwt secret key
 JWT_SECRET=
 # jwt token efficient days
@@ -86,6 +94,7 @@ FACEBOOK_REDIRECT_URL=
 DISCORD_CLIENT_ID=
 DISCORD_CLIENT_SECRET=
 # newebpay
+NEWEBPAY_DOMAIN=
 NEWEBPAY_HASH_IV=
 NEWEBPAY_HASH_KEY=
 NEWEBPAY_MERCHANT_ID=

@@ -13,13 +13,23 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
 const uploadRouter = require('./routes/upload');
+const messageRouter = require('./routes/message');
 const { traceDeprecation } = require('process');
 
 const app = express();
 
+const io = require('socket.io')();
+app.io = io;
+require('./services/websocket')(io);
+app.use(function (req, res, next) {
+  res.io = io;
+  next();
+});
+
 require('./connections');
+
 app.set('view engine', 'html');
-app.use(cors());
+app.use('*', cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -30,6 +40,7 @@ app.use('/', indexRouter);
 app.use(usersRouter);
 app.use('/posts', postsRouter);
 app.use('/upload', uploadRouter);
+app.use('/chat', messageRouter);
 
 app.use((req, res, next) => {
   res.status(404).send({

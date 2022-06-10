@@ -88,6 +88,11 @@ const userSchema = {
     type: Boolean,
     default: false,
   },
+  coin: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
 };
 
 const User_Schema = new mongoose.Schema(userSchema, {

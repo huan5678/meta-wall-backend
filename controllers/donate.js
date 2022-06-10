@@ -1,4 +1,5 @@
 const Payment = require('../models/payment');
+const User = require('../models/user');
 const handleErrorAsync = require('../middleware/handleErrorAsync');
 const successHandle = require('../utils/successHandle');
 const appError = require('../utils/appError');
@@ -31,14 +32,28 @@ const donateController = {
   orderNotify: handleErrorAsync(async (req, res, next) => {
     const id = req.query.id;
     const result = JSON.parse(decrypt(req.body.TradeInfo));
+    const amtToCoin = {
+      100: 35,
+      900: 320,
+      1490: 1290,
+    };
     if (result.Status === 'SUCCESS') {
-      let { TradeNo, MerchantOrderNo, PaymentType, PayTime, IP } = result.Result;
+      let { TradeNo, MerchantOrderNo, PaymentType, PayTime, IP, Amt } = result.Result;
       PayTime = new Date(PayTime.substring(0, 10) + 'T' + PayTime.substring(10, 18)).getTime();
 
       const updateResult = await Payment.findOneAndUpdate(
         { merchantOrderNo: MerchantOrderNo },
         { payment_status: 1, tradeNo: TradeNo, paymentType: PaymentType, payTime: PayTime, IP },
         { new: true },
+      );
+
+      await User.updateOne(
+        {
+          _id: id,
+        },
+        {
+          $set: { coin: amtToCoin[Amt] },
+        },
       );
 
       if (updateResult) {
@@ -56,6 +71,33 @@ const donateController = {
         </script>
       `,
     );
+  }),
+  donateUser: handleErrorAsync(async (req, res, next) => {
+    const donateUserID = req.user.id;
+    const { coinNum, authorUserID } = req.body;
+
+    await User.updateOne(
+      {
+        _id: donateUserID,
+      },
+      {
+        $set: { coin: coin - coinNum },
+      },
+    );
+
+    await User.updateOne(
+      {
+        _id: authorUserID,
+      },
+      {
+        $set: { coin: coin + coinNum },
+      },
+    );
+
+    res.status(200).json({
+      status: 'success',
+      message: '您已成功抖內！',
+    });
   }),
 };
 

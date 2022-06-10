@@ -43,14 +43,6 @@ const Payment_Schema = new mongoose.Schema(paymentSchema, {
   versionKey: false,
 });
 
-Payment_Schema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'userId',
-    select: 'name photo _id',
-  });
-  next();
-});
-
 const Payment = mongoose.model('Payment', Payment_Schema);
 
 module.exports = Payment;

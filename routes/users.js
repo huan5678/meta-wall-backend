@@ -8,6 +8,7 @@ const handleErrorAsync = require('../middleware/handleErrorAsync');
 router.post('/user/create', handleErrorAsync(userController.userCreate));
 router.post('/user/login', handleErrorAsync(userController.userLogin));
 router.get('/user/profile', isAuthor, handleErrorAsync(userController.getProfile));
+router.get('/user/profile/:id', isAuthor, handleErrorAsync(userController.getSpecUserProfile));
 router.patch('/user/profile', isAuthor, handleErrorAsync(userController.updateProfile));
 router.post('/user/update_password', isAuthor, handleErrorAsync(userController.updatePassword));
 

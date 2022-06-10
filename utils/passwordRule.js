@@ -1,6 +1,6 @@
 const appError = require('../utils/appError');
 const passwordRule =
-  /^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[a-zA-Z])(?=.*[`~!@#$%^&*()_+<>?:"{},.\/\\;'[\]]).*$/;
+  /^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[a-zA-Z])(?=.*[`~!@#$%^&*()_+<>?:"{},.\-\/\\;'[\]]).*$/;
 
 const passwordCheck = (password, next) => {
   if (!passwordRule.test(password)) {

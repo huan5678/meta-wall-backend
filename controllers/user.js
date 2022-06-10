@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 const User = require('../models/user');
-const handleErrorAsync = require('../middleware/handleErrorAsync');
+
 const successHandle = require('../utils/successHandle');
 const appError = require('../utils/appError');
 const { generateToken } = require('../middleware/handleJWT');
@@ -9,7 +9,7 @@ const { passwordCheck } = require('../utils/passwordRule');
 const Post = require('../models/post');
 
 const userController = {
-  userCreate: handleErrorAsync(async (req, res, next) => {
+  userCreate: async (req, res, next) => {
     let { email, password, confirmPassword, name } = req.body;
     if (!email || !password || !confirmPassword || !name) {
       return appError(400, '欄位未正確填寫', next);
@@ -47,8 +47,8 @@ const userController = {
     };
     const token = generateToken(currentUser);
     return successHandle(res, '成功建立使用者帳號', { token, user: userPayload });
-  }),
-  userLogin: handleErrorAsync(async (req, res, next) => {
+  },
+  userLogin: async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) {
       return appError(400, 'email 或 password 欄位未正確填寫', next);
@@ -69,13 +69,22 @@ const userController = {
     };
     const token = generateToken(user);
     return successHandle(res, '登入成功', { token, user: userPayload });
-  }),
-  getProfile: handleErrorAsync(async (req, res, next) => {
+  },
+  getProfile: async (req, res, next) => {
     const userId = req.user.id;
     const user = await User.findById(userId);
     return successHandle(res, '成功取得使用者資訊', user);
-  }),
-  updatePassword: handleErrorAsync(async (req, res, next) => {
+  },
+  getSpecUserProfile: async (req, res, next) => {
+    const userID = req.params.id;
+    const user = await User.findById(userID).select('-isValidator -following -gender');
+    const post = await Post.find({ userId: userID }).populate({
+      path: 'comments',
+      select: 'comment user',
+    });
+    return successHandle(res, '成功取得指定使用者資訊', { user, post });
+  },
+  updatePassword: async (req, res, next) => {
     let { password, confirmPassword } = req.body;
     if (!password || !confirmPassword) {
       return appError(400, '欄位未正確填寫', next);
@@ -90,8 +99,8 @@ const userController = {
     const userId = req.user.id;
     await User.findByIdAndUpdate(userId, password);
     return successHandle(res, '成功更新使用者密碼！', {});
-  }),
-  updateProfile: handleErrorAsync(async (req, res, next) => {
+  },
+  updateProfile: async (req, res, next) => {
     let { name, avatar, gender } = req.body;
     if (!name && !avatar && !gender) {
       return appError(400, '要修改的欄位未正確填寫', next);
@@ -105,8 +114,8 @@ const userController = {
     const user = await User.findById(userId);
     const returnUser = { name: user.name, gender: user.gender, avatar: user.avatar };
     return successHandle(res, '成功更新使用者資訊！', returnUser);
-  }),
-  addFollower: handleErrorAsync(async (req, res, next) => {
+  },
+  addFollower: async (req, res, next) => {
     const {
       params: { id: followingID },
       user: { id: userID },
@@ -136,8 +145,8 @@ const userController = {
       status: 'success',
       message: '您已成功追蹤！',
     });
-  }),
-  deleteFollower: handleErrorAsync(async (req, res, next) => {
+  },
+  deleteFollower: async (req, res, next) => {
     const {
       params: { id: followingID },
       user: { id: userID },
@@ -165,8 +174,8 @@ const userController = {
       status: 'success',
       message: '您已成功取消追蹤！',
     });
-  }),
-  getLikesList: handleErrorAsync(async (req, res, next) => {
+  },
+  getLikesList: async (req, res, next) => {
     const likeList = await Post.find(
       {
         likes: { $in: [req.user.id] },
@@ -174,8 +183,8 @@ const userController = {
       { content: false, image: false, likes: false },
     );
     return successHandle(res, '成功取得按讚表單', likeList);
-  }),
-  getFollowList: handleErrorAsync(async (req, res, next) => {
+  },
+  getFollowList: async (req, res, next) => {
     const followList = await User.find(
       {
         _id: req.user.id,
@@ -183,7 +192,7 @@ const userController = {
       { _id: 0, following: 1 },
     );
     return successHandle(res, '成功取得追蹤名單', followList);
-  }),
+  },
 };
 
 module.exports = userController;

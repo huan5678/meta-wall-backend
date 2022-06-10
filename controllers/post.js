@@ -1,22 +1,55 @@
 const Post = require('../models/post');
-const handleErrorAsync = require('../middleware/handleErrorAsync');
+const Comment = require('../models/comments');
 const successHandle = require('../utils/successHandle');
 const appError = require('../utils/appError');
 
 const postController = {
-  getAll: handleErrorAsync(async (req, res, next) => {
-    const post = await Post.find();
+  getAll: async (req, res, next) => {
+    let { timeSort = 'asc', q, type = '', page = 0 } = req.query;
+    const arr = ['likes', 'comments'];
+    if (!arr.includes(type) && type) {
+      return next(appError(400, '無此排序條件', next));
+    }
+    query = q !== undefined ? { content: new RegExp(req.query.q) } : {};
+    const post = await Post.find(query)
+      .populate({
+        path: 'userId',
+        select: 'name avatar',
+      })
+      .populate({
+        path: 'comments',
+        select: 'comment user createdAt',
+      })
+      .skip(page * 20)
+      .sort({ createdAt: `${timeSort === 'asc' ? -1 : 1}` });
+    if (type) {
+      post.sort((a, b) => {
+        if (timeSort === 'asc') {
+          return a[type].length - b[type].length;
+        } else {
+          return b[type].length - a[type].length;
+        }
+      });
+    }
     successHandle(res, '成功撈取所有貼文', post);
-  }),
-  getOne: handleErrorAsync(async (req, res, next) => {
+  },
+  getOne: async (req, res, next) => {
     const { id: _id } = req.params;
     if (!_id) {
       return next(appError(400, '無此貼文', next));
     }
-    let getOneResult = await Post.findById({ _id }, { _id: 0 });
+    let getOneResult = await Post.findById({ _id })
+      .populate({
+        path: 'userId',
+        select: 'name avatar',
+      })
+      .populate({
+        path: 'comments',
+        select: 'comment user createdAt',
+      });
     return successHandle(res, '成功取得一則貼文', getOneResult);
-  }),
-  postCreate: handleErrorAsync(async (req, res, next) => {
+  },
+  postCreate: async (req, res, next) => {
     const { content, image = '' } = req.body;
 
     if (content == undefined) {
@@ -35,8 +68,8 @@ const postController = {
     };
 
     return successHandle(res, '成功新增一則貼文!!', returnPost);
-  }),
-  postDelete: handleErrorAsync(async (req, res, next) => {
+  },
+  postDelete: async (req, res, next) => {
     const id = req.params.id;
     if (!id) {
       return next(appError(400, '無此貼文', next));
@@ -47,26 +80,62 @@ const postController = {
     }
 
     return successHandle(res, '刪除一則貼文');
-  }),
-  postPatch: handleErrorAsync(async (req, res, next) => {
-    const { body } = req;
+  },
+  postPatch: async (req, res, next) => {
+    const { content = '', image = '' } = req.body;
     const { id } = req.params;
-    const editPost = await Post.findByIdAndUpdate(id, body);
-    if (body.content && editPost) {
-      const editData = await Post.findById(editPost._id);
-      successHandle(res, '成功編輯一則貼文!!', editData);
+    if (!content) next(appError(400, '請檢查content 資料', next));
+
+    const editPost = await Post.findByIdAndUpdate({ id }, { content, image, name }, { new: true });
+
+    if (editPost === null || editPost === undefined) {
+      next(appError(400, '請檢查content 資料', next));
     }
-    return next(appError(400, '請檢查content 資料', next));
-  }),
-  addLike: handleErrorAsync(async (req, res, next) => {
+
+    successHandle(res, '成功編輯一則貼文!!', editPost);
+  },
+  addLike: async (req, res, next) => {
     const _id = req.params.id;
     await Post.findOneAndUpdate({ _id }, { $addToSet: { likes: req.user.id } });
     successHandle(res, '新增一個讚');
-  }),
-  deleteLike: handleErrorAsync(async (req, res, next) => {
+  },
+  deleteLike: async (req, res, next) => {
     const _id = req.params.id;
     await Post.findOneAndUpdate({ _id }, { $pull: { likes: req.user.id } });
     successHandle(res, '刪除一個讚');
-  }),
+  },
+  addComment: async (req, res, next) => {
+    const {
+      params: { id: post },
+      user: { id: user },
+      body: { comment: comment },
+    } = req;
+    const newComment = await Comment.create({
+      post,
+      user,
+      comment,
+    });
+
+    await Comment.populate(newComment, {
+      path: 'user',
+      select: '_id -following -isValidator -followers',
+    });
+
+    successHandle(res, '成功新增一則留言', newComment);
+  },
+  getUserPosts: async (req, res, next) => {
+    const userId = req.params.id;
+    if (!userId) {
+      next(appError(400, '尚未帶入 User ID', next));
+    }
+    const getPosts = await Post.find({ userId }).populate({
+      path: 'comments',
+      select: 'comment user',
+    });
+    if (!getPosts) {
+      next(appError(400, '查無此 User', next));
+    }
+    successHandle(res, '成功取得單一會員所有貼文', getPosts);
+  },
 };
 module.exports = postController;

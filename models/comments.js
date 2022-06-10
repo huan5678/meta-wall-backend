@@ -5,6 +5,7 @@ const commentSchema = new mongoose.Schema(
     comment: {
       type: String,
       required: [true, 'comment can not be empty!'],
+      trim: true,
     },
     createdAt: {
       type: Date,

@@ -5,6 +5,7 @@ const validator = require('validator');
 const jwt = require('jsonwebtoken');
 
 const jwtSecret = process.env.JWT_SECRET;
+const frontendDomain = process.env.FRONTEND_DOMAIN;
 
 const User = require('../models/user');
 const successHandle = require('../utils/successHandle');
@@ -51,7 +52,7 @@ const mailerController = {
       path.resolve('./views/resetPassword.ejs'),
       {
         userName: user.name,
-        resetUrl: `https://localhost:3000/?token=${token}`,
+        resetUrl: `${frontendDomain}/login?token=${token}`,
       },
       function (err, data) {
         if (err) {

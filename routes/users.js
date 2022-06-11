@@ -2,28 +2,30 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/user');
 const thirdPartyController = require('../controllers/thirdParty');
+const mailerController = require('../controllers/mailer');
 const { isAuthor } = require('../middleware/handleJWT');
 const handleErrorAsync = require('../middleware/handleErrorAsync');
 
-router.post('/user/create', handleErrorAsync(userController.userCreate));
-router.post('/user/login', handleErrorAsync(userController.userLogin));
-router.get('/user/profile', isAuthor, handleErrorAsync(userController.getProfile));
-router.get('/user/profile/:id', isAuthor, handleErrorAsync(userController.getSpecUserProfile));
-router.patch('/user/profile', isAuthor, handleErrorAsync(userController.updateProfile));
-router.post('/user/update_password', isAuthor, handleErrorAsync(userController.updatePassword));
+router.post('/create', handleErrorAsync(userController.userCreate));
+router.post('/login', handleErrorAsync(userController.userLogin));
+router.get('/profile', isAuthor, handleErrorAsync(userController.getProfile));
+router.patch('/profile', isAuthor, handleErrorAsync(userController.updateProfile));
+router.post('/update_password', isAuthor, handleErrorAsync(userController.updatePassword));
+router.post('/forget_password', handleErrorAsync(mailerController.sendResetEmail));
+router.patch('/:id/reset_password', handleErrorAsync(userController.resetPassword));
 
-router.get('/user/facebook', handleErrorAsync(thirdPartyController.loginWithFacebook));
-router.get('/user/facebook/callback', handleErrorAsync(thirdPartyController.facebookCallback));
-router.get('/user/google', handleErrorAsync(thirdPartyController.loginWithGoogle));
-router.get('/user/google/callback', handleErrorAsync(thirdPartyController.googleCallback));
-router.get('/user/line', handleErrorAsync(thirdPartyController.loginWithLine));
-router.get('/user/line/callback', handleErrorAsync(thirdPartyController.lineCallback));
-router.get('/user/discord', handleErrorAsync(thirdPartyController.loginWithDiscord));
-router.get('/user/discord/callback', handleErrorAsync(thirdPartyController.discordCallback));
+router.get('/facebook', handleErrorAsync(thirdPartyController.loginWithFacebook));
+router.get('/facebook/callback', handleErrorAsync(thirdPartyController.facebookCallback));
+router.get('/google', handleErrorAsync(thirdPartyController.loginWithGoogle));
+router.get('/google/callback', handleErrorAsync(thirdPartyController.googleCallback));
+router.get('/line', handleErrorAsync(thirdPartyController.loginWithLine));
+router.get('/line/callback', handleErrorAsync(thirdPartyController.lineCallback));
+router.get('/discord', handleErrorAsync(thirdPartyController.loginWithDiscord));
+router.get('/discord/callback', handleErrorAsync(thirdPartyController.discordCallback));
 
 router.post('/:id/follow', isAuthor, handleErrorAsync(userController.addFollower));
 router.delete('/:id/unfollow', isAuthor, handleErrorAsync(userController.deleteFollower));
-router.get('/user/getLikesList', isAuthor, handleErrorAsync(userController.getLikesList));
-router.get('/user/getFollowList', isAuthor, handleErrorAsync(userController.getFollowList));
+router.get('/getLikesList', isAuthor, handleErrorAsync(userController.getLikesList));
+router.get('/getFollowList', isAuthor, handleErrorAsync(userController.getFollowList));
 
 module.exports = router;

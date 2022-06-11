@@ -88,6 +88,11 @@ const userSchema = {
     type: Boolean,
     default: false,
   },
+  coin: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
   resetToken: {
     type: String,
     select: false,

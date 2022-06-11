@@ -117,6 +117,16 @@ const donateController = {
     const donateList = await Donate.find({ userId: id });
     return successHandle(res, '成功取得贊助列表', donateList);
   },
+  getDonateeList: async (req, res, next) => {
+    const id = req.user.id;
+    const donateeList = await Donate.find({ donatee: id })
+      .populate({
+        path: 'userId',
+        select: '-following -isValidator -followers -gender',
+      })
+      .limit(5);
+    return successHandle(res, '成功取得被贊助紀錄', donateeList);
+  },
 };
 
 module.exports = donateController;

@@ -21,7 +21,7 @@ const messageSchema = new mongoose.Schema(
 messageSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'userId',
-    select: 'name avatar _id',
+    select: '-following -isValidator -followers -gender',
   });
   next();
 });

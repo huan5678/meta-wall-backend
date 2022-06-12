@@ -21,6 +21,7 @@ module.exports = async function createUserData(res, user, getData, thirdParty) {
       id: userData._id,
       avatar: userData.avatar,
       name: userData.name,
+      coin: userData.coin,
     }).toString();
     return res.redirect(`${frontendHost}?${authParams}`);
   }
@@ -30,6 +31,7 @@ module.exports = async function createUserData(res, user, getData, thirdParty) {
     id: user._id,
     avatar: user.avatar,
     name: user.name,
+    coin: user.coin,
   }).toString();
   return res.redirect(`${frontendHost}?${authParams}`);
 };

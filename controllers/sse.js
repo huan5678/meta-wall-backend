@@ -26,8 +26,9 @@ const eventController = {
   pushEvents: handleErrorAsync(async (req, res, next) => {
     const newOrderNo = req.order.no;
     const newOrderClientId = req.order.id;
+    const newOrderAmt = req.order.amt;
     const sendEventsToAll = () => {
-      const result = { id: newOrderClientId, no: newOrderNo };
+      const result = { id: newOrderClientId, no: newOrderNo, amt: newOrderAmt };
       clients.forEach((client) => client.response.write(`data: ${JSON.stringify(result)}\n\n`));
     };
 

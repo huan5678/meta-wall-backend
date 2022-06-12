@@ -57,7 +57,7 @@ const donateController = {
       );
 
       if (updateResult) {
-        req.order = { id, no: MerchantOrderNo };
+        req.order = { id, no: MerchantOrderNo, amt: Amt };
         eventController.pushEvents(req, res, next);
       }
     }

@@ -69,6 +69,7 @@ const userController = {
       id: user._id,
       name: user.name,
       avatar: user.avatar,
+      coin: user.coin,
     };
     const token = generateToken(user);
     return successHandle(res, '登入成功', { token, user: userPayload });

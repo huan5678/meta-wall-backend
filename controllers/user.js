@@ -125,7 +125,9 @@ const userController = {
     if (token !== user.resetToken) {
       return appError(400, '此驗證連結已失效請重新執行忘記密碼', next);
     }
-    await User.findByIdAndUpdate(userId, { password, resetToken: '' });
+    const salt = bcrypt.genSaltSync(8);
+    const newPassword = bcrypt.hashSync(password, salt);
+    await User.findByIdAndUpdate(userId, { password: newPassword, resetToken: '' });
     return successHandle(res, '成功重置使用者密碼！請使用新密碼登入');
   },
   updateProfile: async (req, res, next) => {

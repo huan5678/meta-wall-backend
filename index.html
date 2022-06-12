@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+      integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/locale/zh-tw.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <section class="p-4">
+      <ul id="messages" class="flex flex-col"></ul>
+      <form id="form" action="" class="flex flex-col p-4 space-y-2">
+        <div class="flex flex-col md:flex-row justify-between gap-4">
+          <div class="md:w-1/2">
+            <label for="token" class="block">輸入使用者 token</label>
+            <input
+              type="text"
+              placeholder="填入使用者token"
+              id="token"
+              autocomplete="off"
+              class="border rounded p-2 mb-2 w-full"
+            />
+          </div>
+          <div class="md:w-1/2">
+            <label for="sendMessage" class="block">傳送訊息</label>
+            <input
+              type="text"
+              placeholder="發送訊息"
+              id="sendMessage"
+              autocomplete="off"
+              class="border rounded p-2 mb-2 w-full"
+            />
+          </div>
+        </div>
+        <button type="button" id="connect" class="bg-slate-300 rounded py-4 px-2">
+          進入聊天室
+        </button>
+        <button type="submit" class="bg-gray-300 rounded py-4 px-2">送出</button>
+      </form>
+    </section>
+    <script src="./index.js" type="module" />
+  </body>
+</html>

@@ -4,12 +4,12 @@ const axios = require('axios');
 const createUser = require('../utils/createUser');
 
 // const google_redirect_url = process.env.GOOGLE_REDIRECT_URL;
-const google_redirect_url = 'http://localhost:3000/user/google/callback';
+const google_redirect_url = `${process.env.BACKEND_DOMAIN}/user/google/callback`;
 const google_client_id = process.env.GOOGLE_CLIENT_ID;
 const google_client_secret = process.env.GOOGLE_CLIENT_SECRET;
 
 // const line_redirect_url = process.env.LINE_REDIRECT_URL;
-const line_redirect_url = 'http://localhost:3000/user/line/callback';
+const line_redirect_url = `${process.env.BACKEND_DOMAIN}/user/line/callback`;
 const line_channel_id = process.env.LINE_CHANNEL_ID;
 const line_channel_secret = process.env.LINE_CHANNEL_SECRET;
 const line_state = 'mongodb-express-line-login';
@@ -17,13 +17,13 @@ const line_state = 'mongodb-express-line-login';
 const facebook_client_id = process.env.FACEBOOK_CLIENT_ID;
 const facebook_client_secret = process.env.FACEBOOK_CLIENT_SECRET;
 // const facebook_redirect_url = process.env.FACEBOOK_REDIRECT_URL;
-const facebook_redirect_url = 'http://localhost:3000/user/facebook/callback';
+const facebook_redirect_url = `${process.env.BACKEND_DOMAIN}/user/facebook/callback`;
 
 const discord_client_id = process.env.DISCORD_CLIENT_ID;
 const discord_client_secret = process.env.DISCORD_CLIENT_SECRET;
 // const discord_redirect_url = process.env.DISCORD_REDIRECT_URL;
 const discord_state = 'mongodb-express-discord';
-const discord_redirect_url = 'http://localhost:3000/user/discord/callback';
+const discord_redirect_url = `${process.env.BACKEND_DOMAIN}/user/discord/callback`;
 
 const tokenHeader = {
   'Content-Type': 'application/x-www-form-urlencoded',

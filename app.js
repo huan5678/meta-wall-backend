@@ -13,6 +13,8 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
 const uploadRouter = require('./routes/upload');
+const donateRouter = require('./routes/donate');
+const messageRouter = require('./routes/message');
 const { traceDeprecation } = require('process');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
@@ -43,9 +45,19 @@ const swaggerSpec = swaggerJSDoc(options);
 
 const app = express();
 
+const io = require('socket.io')();
+app.io = io;
+require('./services/websocket')(io);
+app.use(function (req, res, next) {
+  res.io = io;
+  next();
+});
+
 require('./connections');
-app.set('view engine', 'html');
-app.use(cors());
+// app.set('view engine', 'html');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.use('*', cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -53,10 +65,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use(usersRouter);
+app.use('/user', usersRouter);
 app.use('/posts', postsRouter);
 app.use('/upload', uploadRouter);
 app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+app.use('/donate', donateRouter);
+app.use('/chat', messageRouter);
 
 app.use((req, res, next) => {
   res.status(404).send({

@@ -88,13 +88,22 @@ const userSchema = {
     type: Boolean,
     default: false,
   },
+  coin: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
+  resetToken: {
+    type: String,
+    select: false,
+  },
 };
 
 const User_Schema = new mongoose.Schema(userSchema, {
   versionKey: false,
 });
 
-User_Schema.pre('save', function () {
+User_Schema.pre(['save', 'findByIdAndUpdate'], function () {
   const salt = bcrypt.genSaltSync(8);
   this.password = bcrypt.hashSync(this.password, salt);
 });

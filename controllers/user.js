@@ -1,12 +1,15 @@
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 const User = require('../models/user');
+const Post = require('../models/post');
+
+const jwt = require('jsonwebtoken');
+const jwtSecret = process.env.JWT_SECRET;
 
 const successHandle = require('../utils/successHandle');
 const appError = require('../utils/appError');
 const { generateToken } = require('../middleware/handleJWT');
 const { passwordCheck } = require('../utils/passwordRule');
-const Post = require('../models/post');
 
 const userController = {
   userCreate: async (req, res, next) => {
@@ -66,6 +69,7 @@ const userController = {
       id: user._id,
       name: user.name,
       avatar: user.avatar,
+      coin: user.coin,
     };
     const token = generateToken(user);
     return successHandle(res, '登入成功', { token, user: userPayload });
@@ -74,6 +78,15 @@ const userController = {
     const userId = req.user.id;
     const user = await User.findById(userId);
     return successHandle(res, '成功取得使用者資訊', user);
+  },
+  getSpecUserProfile: async (req, res, next) => {
+    const userID = req.params.id;
+    const user = await User.findById(userID).select('-isValidator -following -gender');
+    const post = await Post.find({ userId: userID }).populate({
+      path: 'comments',
+      select: 'comment user',
+    });
+    return successHandle(res, '成功取得指定使用者資訊', { user, post });
   },
   updatePassword: async (req, res, next) => {
     let { password, confirmPassword } = req.body;
@@ -90,6 +103,32 @@ const userController = {
     const userId = req.user.id;
     await User.findByIdAndUpdate(userId, password);
     return successHandle(res, '成功更新使用者密碼！', {});
+  },
+  resetPassword: async (req, res, next) => {
+    const { token } = req.body;
+    const { password, confirmPassword } = req.body;
+    if (!password || !confirmPassword) {
+      return appError(400, '欄位未正確填寫', next);
+    }
+    if (password.length <= 7 || confirmPassword.length <= 7) {
+      return appError(400, '密碼長度至少 8 個字', next);
+    }
+    passwordCheck(password, next);
+    if (password !== confirmPassword) {
+      return appError(400, '請確認兩次輸入的密碼是否相同', next);
+    }
+
+    const decoded = jwt.verify(token, jwtSecret);
+
+    const userId = decoded.id;
+    const user = await User.findById(userId).select('+resetToken').exec();
+    if (token !== user.resetToken) {
+      return appError(400, '此驗證連結已失效請重新執行忘記密碼', next);
+    }
+    const salt = bcrypt.genSaltSync(8);
+    const newPassword = bcrypt.hashSync(password, salt);
+    await User.findByIdAndUpdate(userId, { password: newPassword, resetToken: '' });
+    return successHandle(res, '成功重置使用者密碼！請使用新密碼登入');
   },
   updateProfile: async (req, res, next) => {
     let { name, avatar, gender } = req.body;

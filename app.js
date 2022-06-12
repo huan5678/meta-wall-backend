@@ -16,6 +16,32 @@ const uploadRouter = require('./routes/upload');
 const donateRouter = require('./routes/donate');
 const messageRouter = require('./routes/message');
 const { traceDeprecation } = require('process');
+const swaggerUI = require('swagger-ui-express');
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerDefinition = {
+  openapi: '3.0.0',
+  info: {
+    title: 'Express API for MetaWall',
+    version: '1.0.0',
+    description: '第 9 組 meta wall node.js project',
+
+  },
+  servers: [
+    {
+      url: 'http://localhost:3000',
+      description: 'local dev server',
+    },
+    {
+      url: 'https://meta-wall-backend.herokuapp.com:3000',
+      description: 'remote heroku server'
+    }
+  ],
+};
+const options = {
+  swaggerDefinition,
+  apis: ['./routes/*.js'],
+};
+const swaggerSpec = swaggerJSDoc(options);
 
 const app = express();
 
@@ -42,6 +68,7 @@ app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/posts', postsRouter);
 app.use('/upload', uploadRouter);
+app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use('/donate', donateRouter);
 app.use('/chat', messageRouter);
 

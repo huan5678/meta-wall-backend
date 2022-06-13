@@ -14,7 +14,7 @@ npm install
 
 Setting Environment Variables
 ```sh
-cp config.env
+.env
 ```
 
 Run Service:
